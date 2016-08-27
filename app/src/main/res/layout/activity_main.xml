@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:text="Hello World!" />
     <com.example.xiamin.musicplayer.CircleImage.CircleImageView
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="match_parent"
         android:src="@mipmap/ic_launcher"
         app:BorderWidth="10dp"
