@@ -1,5 +1,6 @@
 package com.example.xiamin.musicplayer.CircleImage;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -12,6 +13,7 @@ import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 
 import com.example.xiamin.musicplayer.R;
@@ -109,6 +111,7 @@ public class CircleImageView extends ImageView {
         //end 设置阴影
 
         canvas.drawCircle(mWidth / 2, mWidth / 2, mRadius, mBorderPaint);
+        StartRotation();
     }
 
     /**
@@ -151,5 +154,26 @@ public class CircleImageView extends ImageView {
          */
         mBitmapPaint.setShader(mBitmapShader);
 
+    }
+
+    /**
+     增加旋转动画
+     */
+    ObjectAnimator animtorAlpha;
+    public void StartRotation()
+    {
+        animtorAlpha = ObjectAnimator.ofFloat(this,"rotation",0f,1800f);
+        animtorAlpha.setInterpolator(new LinearInterpolator());
+        animtorAlpha.setRepeatCount(100);
+        animtorAlpha.setDuration(36000);
+        animtorAlpha.start();
+    }
+
+    /**
+     * 停止旋转
+     */
+    public void StopRotation()
+    {
+        animtorAlpha.end();
     }
 }

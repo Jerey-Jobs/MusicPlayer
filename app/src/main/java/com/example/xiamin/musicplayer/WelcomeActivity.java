@@ -23,8 +23,8 @@ public class WelcomeActivity extends Activity {
          * 改成放大的属性动画
          */
         ObjectAnimator animtorAlpha = ObjectAnimator.ofFloat(view,"alpha",0.1f,1f);
-        ObjectAnimator animatorX = ObjectAnimator.ofFloat(view, "scaleX", 1f, 1.2f);
-        ObjectAnimator animatorY = ObjectAnimator.ofFloat(view, "scaleY", 1f, 1.2f);
+        ObjectAnimator animatorX = ObjectAnimator.ofFloat(view, "scaleX", 1f, 1.0f);
+        ObjectAnimator animatorY = ObjectAnimator.ofFloat(view, "scaleY", 1f, 1.0f);
 
         AnimatorSet set = new AnimatorSet();
         set.setDuration(1500).play(animatorX).with(animatorY).with(animtorAlpha);
@@ -39,7 +39,7 @@ public class WelcomeActivity extends Activity {
 
                 startActivity(new Intent(WelcomeActivity.this, MainActivity.class));
                 WelcomeActivity.this.finish();
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.slide_out_right);
             }
         });
 
