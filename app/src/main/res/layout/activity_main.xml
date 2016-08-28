@@ -45,67 +45,6 @@
             android:textSize="18sp" />
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp">
-
-        <TextView
-            android:id="@+id/tv_pass_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="01:20"
-            android:textColor="@color/colorAccent"
-            android:textSize="12sp" />
-
-        <SeekBar
-            android:id="@+id/progressbar"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:max="50"
-            android:paddingTop="3dp" />
-
-        <TextView
-            android:id="@+id/tv_main_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="05:13"
-            android:textColor="@color/white" />
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/pre_music"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="上一首" />
-
-        <Button
-            android:id="@+id/pause_music"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="播放/暂停" />
-
-        <Button
-            android:id="@+id/next_music"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="下一首" />
-
-    </LinearLayout>
-
+    <include layout="@layout/player_item"
+       />
 </LinearLayout>

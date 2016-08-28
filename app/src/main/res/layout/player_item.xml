@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/player_item"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+
+        <TextView
+            android:id="@+id/tv_pass_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="01:20"
+            android:textColor="@color/colorAccent"
+            android:textSize="12sp" />
+
+        <SeekBar
+            android:id="@+id/progressbar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:max="50"
+            android:paddingTop="3dp" />
+
+        <TextView
+            android:id="@+id/tv_main_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="05:13"
+            android:textColor="@color/colorPrimaryDark" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:layout_marginTop="10dp">
+
+        <Button
+            android:id="@+id/pre_music"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="上一首"
+            />
+
+        <Button
+            android:id="@+id/pause_music"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="播放/暂停" />
+
+        <Button
+            android:id="@+id/next_music"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="下一首" />
+
+    </LinearLayout>
+
+
+</LinearLayout>
