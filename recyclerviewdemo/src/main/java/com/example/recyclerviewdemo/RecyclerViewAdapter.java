@@ -45,7 +45,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 @Override
                 public boolean onLongClick(View view) {
                     mOnItemClickListener.onItemLongClick(holder.itemView ,position);
-                    return false;
+
+                    //返回true 这样触发了onLongClick后便不会再触发onClick了
+                    return true;
                 }
             });
         }
