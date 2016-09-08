@@ -4,24 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#216995"
+    android:background="@color/colorPrimary"
     android:orientation="vertical"
     tools:context="com.example.xiamin.musicplayer.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="4"
+        android:layout_weight="3"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="10dp">
 
         <com.example.xiamin.musicplayer.CircleImage.CircleImageView
-            android:layout_width="260dp"
-            android:layout_height="match_parent"
+            android:id="@+id/main_circleimage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:src="@drawable/rabbit_red"
             app:BorderColor="@color/colorPrimary"
-            app:BorderWidth="10dp" />
+            app:BorderWidth="2dp"
+            android:layout_weight="1"/>
 
         <TextView
             android:id="@+id/tv_main_title"

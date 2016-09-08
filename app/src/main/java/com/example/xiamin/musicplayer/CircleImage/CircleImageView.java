@@ -13,6 +13,7 @@ import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 
@@ -167,7 +168,8 @@ public class CircleImageView extends ImageView {
         animtorAlpha.setRepeatCount(100);
         animtorAlpha.setDuration(36000);
         animtorAlpha.start();
-    }
+        Log.i("iii","reloate");
+        }
 
     /**
      * 停止旋转

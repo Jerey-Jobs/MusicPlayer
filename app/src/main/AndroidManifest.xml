@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.xiamin.musicplayer">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.MEDIA_CONTENT_CONTROL"/>
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/qq_music"
@@ -17,6 +20,8 @@
         </activity>
 
         <activity android:name="com.example.xiamin.musicplayer.MainActivity"/>
+
+        <service android:name=".Service.MusicPlayService"/>
     </application>
 
 </manifest>
