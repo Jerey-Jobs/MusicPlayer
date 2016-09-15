@@ -1,4 +1,4 @@
-package com.example.xiamin.musicplayer;
+package com.example.xiamin.musicplayer.Activity;
 
 import android.app.Service;
 import android.content.ComponentName;
@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.example.xiamin.musicplayer.CircleImage.CircleImageView;
 import com.example.xiamin.musicplayer.MVP.IMainView;
+import com.example.xiamin.musicplayer.R;
 import com.example.xiamin.musicplayer.Service.MusicPlayService;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,

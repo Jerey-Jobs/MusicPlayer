@@ -1,9 +1,11 @@
-package com.example.xiamin.musicplayer;
+package com.example.xiamin.musicplayer.Activity;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+
+import com.example.xiamin.musicplayer.R;
 
 /**
  * Created by Xiamin on 2016/8/28.

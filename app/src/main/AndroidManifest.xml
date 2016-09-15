@@ -2,16 +2,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.xiamin.musicplayer">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.MEDIA_CONTENT_CONTROL"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.MEDIA_CONTENT_CONTROL" />
 
     <application
+        android:name=".Activity.MusicPlayerApplication"
         android:allowBackup="true"
         android:icon="@drawable/qq_music"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".WelcomeActivity">
+        <activity android:name=".Activity.WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,9 +20,11 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.example.xiamin.musicplayer.MainActivity"/>
+        <activity android:name=".Activity.MainActivity" />
+        <activity android:name=".Activity.MusicActivity" />
 
-        <service android:name=".Service.MusicPlayService"/>
+        <service android:name=".Service.MusicPlayService" />
+
     </application>
 
 </manifest>

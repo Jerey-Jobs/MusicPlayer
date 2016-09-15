@@ -1,4 +1,4 @@
-package com.example.xiamin.musicplayer;
+package com.example.xiamin.musicplayer.Activity;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -8,6 +8,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+
+import com.example.xiamin.musicplayer.R;
 
 /**
  * Created by Xiamin on 2016/8/27.
@@ -37,7 +39,7 @@ public class WelcomeActivity extends Activity {
             public void onAnimationEnd(Animator animation)
             {
 
-                startActivity(new Intent(WelcomeActivity.this, MainActivity.class));
+                startActivity(new Intent(WelcomeActivity.this, MusicActivity.class));
                 WelcomeActivity.this.finish();
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.slide_out_right);
             }
