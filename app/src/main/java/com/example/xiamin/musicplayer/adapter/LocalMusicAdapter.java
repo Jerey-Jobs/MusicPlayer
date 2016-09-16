@@ -7,6 +7,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.xiamin.musicplayer.Bean.MusicInfoBean;
 import com.example.xiamin.musicplayer.R;
 import com.example.xiamin.musicplayer.Service.MusicPlayService;
@@ -47,6 +48,13 @@ public class LocalMusicAdapter extends BaseAdapter {
         holder.tvTitle.setText(music.getTitle());
         holder.tvArtist.setText(music.getArtist());
         holder.vDivider.setVisibility(isShowDivider(i) ? View.VISIBLE : View.GONE);
+        /**
+         * Glide加载图片，就是这么简单。。
+         */
+        Glide.with(viewGroup.getContext())
+                .load(music.getCoverUri())
+                .error(R.drawable.default_cover)
+                .into(holder.ivCover);
         return view;
     }
 

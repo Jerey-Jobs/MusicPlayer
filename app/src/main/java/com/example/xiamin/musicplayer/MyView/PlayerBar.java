@@ -80,6 +80,7 @@ public class PlayerBar extends FrameLayout implements View.OnClickListener{
             case R.id.iv_play_bar_play:
             {
                 Log.i("iii","iv_play_bar_play 点击事件 暂停或者播放");
+
                 break;
             }
             case R.id.iv_play_bar_next:{

@@ -27,8 +27,6 @@ public class MusicPlayService extends Service implements MediaPlayer.OnPreparedL
     private static List<MusicInfoBean> sMusicList = new ArrayList<MusicInfoBean>();
     //private String path = "http://ws.stream.qqmusic.qq.com/104779440.m4a?fromtag=46";
 
-
-
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -100,7 +98,7 @@ public class MusicPlayService extends Service implements MediaPlayer.OnPreparedL
         }
         for(MusicInfoBean k:sMusicList)
         {
-            Log.i("iii",k.getTitle());
+            Log.i("iii",k.getTitle() + k.getCoverUri());
         }
     }
 

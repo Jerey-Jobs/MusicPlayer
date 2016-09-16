@@ -46,7 +46,7 @@ public class MusicScanUntils {
             long duration = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.DURATION));
             String uri = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
             long albumId = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID));
-         //   String coverUri = getCoverUri(context, albumId);
+            String coverUri = getCoverUri(context, albumId);
             String fileName = cursor.getString((cursor.getColumnIndex(MediaStore.Audio.Media.DISPLAY_NAME)));
             long fileSize = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Media.SIZE));
             String year = cursor.getString((cursor.getColumnIndex(MediaStore.Audio.Media.YEAR)));
@@ -58,7 +58,7 @@ public class MusicScanUntils {
             music.setAlbum(album);
             music.setDuration(duration);
             music.setUri(uri);
-          //  music.setCoverUri(coverUri);
+            music.setCoverUri(coverUri);
             music.setFileName(fileName);
             music.setFileSize(fileSize);
             music.setYear(year);
@@ -67,6 +67,12 @@ public class MusicScanUntils {
         cursor.close();
     }
 
+    /**
+     * 根据封面ID查找封面uri
+     * @param context
+     * @param albumId
+     * @return
+     */
     private static String getCoverUri(Context context, long albumId) {
         String uri = null;
         Cursor cursor = context.getContentResolver().query(
@@ -77,7 +83,7 @@ public class MusicScanUntils {
             uri = cursor.getString(0);
             cursor.close();
         }
-    //    CoverLoader.getInstance().loadThumbnail(uri);
+
         return uri;
     }
 }

@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -16,15 +17,19 @@ import butterknife.Bind;
 /**
  * Created by Xiamin on 2016/9/15.
  */
-public class LocalMusicFragment extends BaseFragment{
+public class LocalMusicFragment extends BaseFragment implements AdapterView.OnItemClickListener{
     @Bind(R.id.lv_local_music)
     ListView mListLocalMusic;
     @Bind(R.id.tv_empty)
     TextView mTvEmpty;
 
+    private LocalMusicAdapter adapter;
+
     @Override
     public void initView() {
-        mListLocalMusic.setAdapter(new LocalMusicAdapter());
+        adapter = new LocalMusicAdapter();
+        mListLocalMusic.setAdapter(adapter);
+        mListLocalMusic.setOnItemClickListener(this);
     }
 
     @Nullable
@@ -33,4 +38,8 @@ public class LocalMusicFragment extends BaseFragment{
         return inflater.inflate(R.layout.fragment_local_music,container,false);
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+    }
 }
