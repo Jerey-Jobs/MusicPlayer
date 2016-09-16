@@ -25,7 +25,9 @@ import butterknife.ButterKnife;
 public class BaseActivity extends AppCompatActivity {
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
+
     protected Handler mHandler;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +39,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     public void setContentView(int layoutResID) {
         super.setContentView(layoutResID);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
         initView();
     }
 
@@ -68,9 +71,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     private void setSystemBarTransparent() {
-
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-
+         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
     }
 
     public void showSoftKeyboard(final EditText editText) {

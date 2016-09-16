@@ -29,7 +29,7 @@ public class WelcomeActivity extends Activity {
         ObjectAnimator animatorY = ObjectAnimator.ofFloat(view, "scaleY", 1f, 1.0f);
 
         AnimatorSet set = new AnimatorSet();
-        set.setDuration(1500).play(animatorX).with(animatorY).with(animtorAlpha);
+        set.setDuration(1000).play(animatorX).with(animatorY).with(animtorAlpha);
         set.start();
 
         set.addListener(new AnimatorListenerAdapter()
@@ -41,7 +41,7 @@ public class WelcomeActivity extends Activity {
 
                 startActivity(new Intent(WelcomeActivity.this, MusicActivity.class));
                 WelcomeActivity.this.finish();
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.slide_out_right);
+                overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
             }
         });
 

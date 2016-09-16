@@ -9,15 +9,25 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.example.xiamin.musicplayer.Bean.MusicInfoBean;
+import com.example.xiamin.musicplayer.utils.Actions;
+import com.example.xiamin.musicplayer.utils.MusicScanUntils;
+
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Xiamin on 2016/9/8.
  */
-public class MusicPlayService extends Service implements MediaPlayer.OnPreparedListener,MediaPlayer.OnBufferingUpdateListener {
+public class MusicPlayService extends Service implements MediaPlayer.OnPreparedListener,MediaPlayer.OnCompletionListener
+        ,MediaPlayer.OnBufferingUpdateListener {
 
     private MediaPlayer mediaPlayer =  new MediaPlayer();
-    private String path = "http://ws.stream.qqmusic.qq.com/104779440.m4a?fromtag=46";
+    private static List<MusicInfoBean> sMusicList = new ArrayList<MusicInfoBean>();
+    //private String path = "http://ws.stream.qqmusic.qq.com/104779440.m4a?fromtag=46";
+
+
 
     @Nullable
     @Override
@@ -29,6 +39,11 @@ public class MusicPlayService extends Service implements MediaPlayer.OnPreparedL
     @Override
     public void onCreate() {
         Log.i("iii","Service onCreate");
+        if(mediaPlayer.isPlaying()){
+            stopPlayer();
+        }
+        mediaPlayer.setOnCompletionListener(this);
+        updateMusicList();
         super.onCreate();
     }
 
@@ -43,20 +58,77 @@ public class MusicPlayService extends Service implements MediaPlayer.OnPreparedL
 
     }
 
-    public class Mybinder extends Binder
-    {
-        public MusicPlayService getservice()
-        {
-            return MusicPlayService.this;
-        }
+    /**
+     * 一首歌曲播放完毕了，该播放下一首
+     * @param mediaPlayer
+     */
+    @Override
+    public void onCompletion(MediaPlayer mediaPlayer) {
+
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i("iii","service onStartCommand");
-
+        switch (intent.getAction()) {
+            case Actions.ACTION_MEDIA_PLAY_PAUSE:
+            //    playPause();
+                break;
+            case Actions.ACTION_MEDIA_NEXT:
+             //   next();
+                break;
+            case Actions.ACTION_MEDIA_PREVIOUS:
+            //    prev();
+                break;
+        }
         return super.onStartCommand(intent, flags, startId);
     }
+
+    public static List<MusicInfoBean> getMusicList()
+    {
+        return sMusicList;
+    }
+
+    /**
+     * 每次启动时扫描音乐
+     */
+    public void updateMusicList() {
+        MusicScanUntils.scanMusic(this, getMusicList());
+        if (getMusicList().isEmpty()) {
+            Log.i("iii","getMusicList().isEmpty()");
+            return;
+        }
+        for(MusicInfoBean k:sMusicList)
+        {
+            Log.i("iii",k.getTitle());
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public void initPlayer()
     {
@@ -67,8 +139,7 @@ public class MusicPlayService extends Service implements MediaPlayer.OnPreparedL
         mediaPlayer.setOnBufferingUpdateListener(this);
         mediaPlayer.setOnPreparedListener(this);
 
-        //    startPlayer(path,0);
-        playUrl(path);
+       // playUrl(path);
         Log.i("iii","service initPlayer");
     }
 
@@ -95,6 +166,11 @@ public class MusicPlayService extends Service implements MediaPlayer.OnPreparedL
         }
     }
 
+
+
+
+
+
     public void stopPlayer()
     {
         if(mediaPlayer != null) {
@@ -108,15 +184,20 @@ public class MusicPlayService extends Service implements MediaPlayer.OnPreparedL
     }
 
 
-
-
-
     @Override
     public void onDestroy() {
         super.onDestroy();
         if(mediaPlayer != null){
             mediaPlayer.stop();
             mediaPlayer.release();
+        }
+    }
+
+    public class Mybinder extends Binder
+    {
+        public MusicPlayService getservice()
+        {
+            return MusicPlayService.this;
         }
     }
 }
