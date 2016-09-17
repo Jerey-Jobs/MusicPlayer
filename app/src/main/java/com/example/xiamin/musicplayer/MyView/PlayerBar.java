@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.example.xiamin.musicplayer.Bean.MusicInfoBean;
 import com.example.xiamin.musicplayer.R;
 import com.example.xiamin.musicplayer.Service.MusicPlayService;
 
@@ -35,6 +37,7 @@ public class PlayerBar extends FrameLayout implements View.OnClickListener{
     ImageView mImagePlayNext;
     @Bind(R.id.pb_play_bar)
     ProgressBar mProgress;    //之前 绑定错id出错
+    MusicInfoBean musicInfoBean;
 
     private Context mContext;
 
@@ -111,6 +114,8 @@ public class PlayerBar extends FrameLayout implements View.OnClickListener{
             }
             case R.id.iv_play_bar_next:{
                 Log.i("iii","iv_play_bar_next 点击事件，下一首");
+                musicPlayService.next();
+                setInfo(MusicPlayService.getMusicList().get(MusicPlayService.getPlayingMusicPosition()));
                 break;
             }
 
@@ -121,4 +126,17 @@ public class PlayerBar extends FrameLayout implements View.OnClickListener{
         }
 
     }
+
+    public void setInfo(MusicInfoBean musicInfoBean)
+    {
+        this.musicInfoBean = musicInfoBean;
+        Glide.with(mContext)
+                .load(musicInfoBean.getCoverUri())
+                .error(R.drawable.default_cover)
+                .into(mImageCover);
+        mMusicTitle.setText(musicInfoBean.getTitle());
+        mMusicArtist.setText(musicInfoBean.getArtist());
+
+    }
+
 }

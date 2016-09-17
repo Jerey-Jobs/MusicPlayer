@@ -29,6 +29,7 @@ public class MusicPlayService extends Service implements
     private static List<MusicInfoBean> sMusicList = new ArrayList<MusicInfoBean>();
     //private String path = "http://ws.stream.qqmusic.qq.com/104779440.m4a?fromtag=46";
     private MusicInfoBean mPlayingMusic;
+    private static int mPlayingMusicPosition;
 
     @Nullable
     @Override
@@ -154,6 +155,10 @@ public class MusicPlayService extends Service implements
          * 若重复点击该歌曲 不重复播放
          */
         if (music.equals(mPlayingMusic)) {
+            if(!mediaPlayer.isPlaying())
+            {
+                resume();
+            }
             return;
         }
         mPlayingMusic = music;
@@ -167,6 +172,33 @@ public class MusicPlayService extends Service implements
         }
     }
 
+    public void play(int pos) {
+        /**
+         * 若重复点击该歌曲 不重复播放
+         * 同时先做下标判断，下标溢出置零
+         */
+        if(pos >= getMusicList().size())
+        {
+            pos %= getMusicList().size();
+        }
+        if (mPlayingMusicPosition == pos) {
+            if(!mediaPlayer.isPlaying())
+            {
+                resume();
+            }
+            return;
+        }
+        mPlayingMusicPosition = pos;
+
+        try {
+            mediaPlayer.reset();
+            mediaPlayer.setDataSource(getMusicList().get(pos).getUri());
+            mediaPlayer.prepare();
+            mediaPlayer.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void initPlayer() {
         if (mediaPlayer.isPlaying()) {
@@ -201,6 +233,11 @@ public class MusicPlayService extends Service implements
         }
     }
 
+    public int next() {
+        play(mPlayingMusicPosition + 1);
+        return mPlayingMusicPosition;
+    }
+
 
     public void stopPlayer() {
         if (mediaPlayer != null) {
@@ -211,6 +248,11 @@ public class MusicPlayService extends Service implements
                 e.printStackTrace();
             }
         }
+    }
+
+    public static int getPlayingMusicPosition()
+    {
+        return mPlayingMusicPosition;
     }
 
 

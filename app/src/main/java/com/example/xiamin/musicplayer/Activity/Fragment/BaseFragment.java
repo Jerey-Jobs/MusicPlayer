@@ -81,4 +81,28 @@ public abstract class BaseFragment extends Fragment {
         }
         return mMusicPlayService;
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        context.unbindService(connet);
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

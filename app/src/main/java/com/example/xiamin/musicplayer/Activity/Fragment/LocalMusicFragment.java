@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.xiamin.musicplayer.Activity.MusicActivity;
 import com.example.xiamin.musicplayer.R;
 import com.example.xiamin.musicplayer.Service.MusicPlayService;
 import com.example.xiamin.musicplayer.adapter.LocalMusicAdapter;
@@ -41,6 +42,11 @@ public class LocalMusicFragment extends BaseFragment implements AdapterView.OnIt
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        getPlayService().play(MusicPlayService.getMusicList().get(i));
+        /**
+         * 让service播放该音乐
+         * 改变activity上的playbar信息
+         */
+        getPlayService().play(i);
+        ((MusicActivity)getActivity()).setPlayBar(MusicPlayService.getMusicList().get(i));
     }
 }

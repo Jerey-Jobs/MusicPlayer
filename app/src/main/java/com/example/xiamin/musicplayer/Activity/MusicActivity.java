@@ -17,6 +17,9 @@ import android.widget.TextView;
 
 import com.example.xiamin.musicplayer.Activity.Fragment.LocalMusicFragment;
 import com.example.xiamin.musicplayer.Activity.Fragment.PlayFragment;
+import com.example.xiamin.musicplayer.Bean.MusicInfoBean;
+import com.example.xiamin.musicplayer.MVP.IPlayBar;
+import com.example.xiamin.musicplayer.MyView.PlayerBar;
 import com.example.xiamin.musicplayer.R;
 import com.example.xiamin.musicplayer.Service.MusicPlayService;
 import com.example.xiamin.musicplayer.adapter.FragmentAdapter;
@@ -26,7 +29,9 @@ import butterknife.Bind;
 /**
  * Created by Xiamin on 2016/9/15.
  */
-public class MusicActivity extends BaseActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
+public class MusicActivity extends BaseActivity implements View.OnClickListener,
+        ViewPager.OnPageChangeListener
+        ,IPlayBar{
     @Bind(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
     @Bind(R.id.navigation_view)
@@ -42,6 +47,8 @@ public class MusicActivity extends BaseActivity implements View.OnClickListener,
     @Bind(R.id.viewpager)
     ViewPager mViewPager;
 
+    PlayerBar mPlayBar;
+
     private View vNavigationHeader;
     private LocalMusicFragment mLocalMusicFragment;
     private PlayFragment mPlayFragment;
@@ -55,6 +62,8 @@ public class MusicActivity extends BaseActivity implements View.OnClickListener,
     }
 
     private void initView() {
+        mPlayBar = (PlayerBar) findViewById(R.id.fl_play_bar);
+
         mViewPager.setOnPageChangeListener(this);
         mDrawerLayout.setOnClickListener(this);
         mIvSearch.setOnClickListener(this);
@@ -141,5 +150,17 @@ public class MusicActivity extends BaseActivity implements View.OnClickListener,
     @Override
     public void onPageScrollStateChanged(int state) {
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbindService(connet);
+    }
+
+
+    @Override
+    public void setPlayBar(MusicInfoBean musicInfoBean) {
+        mPlayBar.setInfo(musicInfoBean);
     }
 }
