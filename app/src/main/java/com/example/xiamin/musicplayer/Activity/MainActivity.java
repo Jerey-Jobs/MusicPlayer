@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             Log.i("iii","onServiceConnected");
             servicebinder =  ((MusicPlayService.Mybinder)iBinder).getservice();
-            servicebinder.initPlayer();
         }
 
         //当启动源和service连接意外丢失时会调用

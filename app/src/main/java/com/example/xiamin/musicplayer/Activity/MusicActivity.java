@@ -92,6 +92,11 @@ public class MusicActivity extends BaseActivity implements View.OnClickListener,
         bindService(intent, connet, Context.BIND_AUTO_CREATE);
     }
 
+    public MusicPlayService getMusicService()
+    {
+        return servicebinder;
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {

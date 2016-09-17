@@ -1,6 +1,10 @@
 package com.example.xiamin.musicplayer.MyView;
 
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -10,6 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.xiamin.musicplayer.R;
+import com.example.xiamin.musicplayer.Service.MusicPlayService;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -18,8 +23,6 @@ import butterknife.ButterKnife;
  * Created by Xiamin on 2016/9/15.
  */
 public class PlayerBar extends FrameLayout implements View.OnClickListener{
-
-
     @Bind(R.id.iv_play_bar_cover)
     ImageView mImageCover;
     @Bind(R.id.tv_play_bar_title)
@@ -53,6 +56,29 @@ public class PlayerBar extends FrameLayout implements View.OnClickListener{
 
     private void init(Context context, AttributeSet attrs) {
         mContext = context;
+        mybindService();
+    }
+
+    private MusicPlayService musicPlayService;
+    private ServiceConnection connet = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            Log.i("iii", "onServiceConnected");
+            musicPlayService = ((MusicPlayService.Mybinder) iBinder).getservice();
+            //    servicebinder.initPlayer();
+        }
+
+        //当启动源和service连接意外丢失时会调用
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            Log.i("iii", "onServiceDisconnected");
+        }
+    };
+
+    private void mybindService() {
+        Intent intent = new Intent();
+        intent.setClass(mContext, MusicPlayService.class);
+        mContext.bindService(intent, connet, Context.BIND_AUTO_CREATE);
     }
 
     @Override
@@ -80,7 +106,7 @@ public class PlayerBar extends FrameLayout implements View.OnClickListener{
             case R.id.iv_play_bar_play:
             {
                 Log.i("iii","iv_play_bar_play 点击事件 暂停或者播放");
-
+                musicPlayService.playPause();
                 break;
             }
             case R.id.iv_play_bar_next:{

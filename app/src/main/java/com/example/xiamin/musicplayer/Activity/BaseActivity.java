@@ -34,6 +34,8 @@ public class BaseActivity extends AppCompatActivity {
         mHandler = new Handler();
         setSystemBarTransparent();
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
+
+
     }
 
     @Override

@@ -10,6 +10,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.xiamin.musicplayer.R;
+import com.example.xiamin.musicplayer.Service.MusicPlayService;
 import com.example.xiamin.musicplayer.adapter.LocalMusicAdapter;
 
 import butterknife.Bind;
@@ -40,6 +41,6 @@ public class LocalMusicFragment extends BaseFragment implements AdapterView.OnIt
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
+        getPlayService().play(MusicPlayService.getMusicList().get(i));
     }
 }

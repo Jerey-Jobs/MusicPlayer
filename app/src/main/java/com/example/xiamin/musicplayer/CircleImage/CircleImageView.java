@@ -112,7 +112,7 @@ public class CircleImageView extends ImageView {
         //end 设置阴影
 
         canvas.drawCircle(mWidth / 2, mWidth / 2, mRadius, mBorderPaint);
-        StartRotation();
+    //    StartRotation();
     }
 
     /**
