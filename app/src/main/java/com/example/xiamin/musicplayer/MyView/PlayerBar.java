@@ -37,7 +37,6 @@ public class PlayerBar extends FrameLayout implements View.OnClickListener{
     ImageView mImagePlayNext;
     @Bind(R.id.pb_play_bar)
     ProgressBar mProgress;    //之前 绑定错id出错
-    MusicInfoBean musicInfoBean;
 
     private Context mContext;
 
@@ -110,6 +109,13 @@ public class PlayerBar extends FrameLayout implements View.OnClickListener{
             {
                 Log.i("iii","iv_play_bar_play 点击事件 暂停或者播放");
                 musicPlayService.playPause();
+                if(MusicPlayService.getPlayingState())
+                {
+                    mImagePlayButton.setImageResource(R.drawable.ic_play_bar_btn_pause);
+                }else {
+                    mImagePlayButton.setImageResource(R.drawable.ic_play_bar_btn_play);
+                }
+
                 break;
             }
             case R.id.iv_play_bar_next:{
@@ -121,6 +127,7 @@ public class PlayerBar extends FrameLayout implements View.OnClickListener{
 
             default:{
                 Log.i("iii","onclick 去播放界面");
+
             }
 
         }
@@ -129,13 +136,18 @@ public class PlayerBar extends FrameLayout implements View.OnClickListener{
 
     public void setInfo(MusicInfoBean musicInfoBean)
     {
-        this.musicInfoBean = musicInfoBean;
         Glide.with(mContext)
                 .load(musicInfoBean.getCoverUri())
                 .error(R.drawable.default_cover)
                 .into(mImageCover);
         mMusicTitle.setText(musicInfoBean.getTitle());
         mMusicArtist.setText(musicInfoBean.getArtist());
+        if(MusicPlayService.getPlayingState())
+        {
+            mImagePlayButton.setImageResource(R.drawable.ic_play_bar_btn_pause);
+        }else {
+            mImagePlayButton.setImageResource(R.drawable.ic_play_bar_btn_play);
+        }
 
     }
 

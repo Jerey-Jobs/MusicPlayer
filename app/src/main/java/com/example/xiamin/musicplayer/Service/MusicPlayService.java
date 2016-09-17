@@ -9,6 +9,7 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.example.xiamin.musicplayer.Activity.BaseActivity;
 import com.example.xiamin.musicplayer.Bean.MusicInfoBean;
 import com.example.xiamin.musicplayer.utils.Actions;
 import com.example.xiamin.musicplayer.utils.MusicScanUntils;
@@ -25,8 +26,9 @@ public class MusicPlayService extends Service implements
         , MediaPlayer.OnCompletionListener
         , MediaPlayer.OnBufferingUpdateListener {
 
-    private MediaPlayer mediaPlayer = new MediaPlayer();
+    private static MediaPlayer mediaPlayer = new MediaPlayer();
     private static List<MusicInfoBean> sMusicList = new ArrayList<MusicInfoBean>();
+    private static final List<BaseActivity> sActivityStack = new ArrayList<>();
     //private String path = "http://ws.stream.qqmusic.qq.com/104779440.m4a?fromtag=46";
     private MusicInfoBean mPlayingMusic;
     private static int mPlayingMusicPosition;
@@ -135,6 +137,8 @@ public class MusicPlayService extends Service implements
             return -1;
         }
         mediaPlayer.pause();
+
+
         Log.i("iii", "mediaPlayer.pause();");
         return 0;
 
@@ -155,8 +159,7 @@ public class MusicPlayService extends Service implements
          * 若重复点击该歌曲 不重复播放
          */
         if (music.equals(mPlayingMusic)) {
-            if(!mediaPlayer.isPlaying())
-            {
+            if (!mediaPlayer.isPlaying()) {
                 resume();
             }
             return;
@@ -177,13 +180,11 @@ public class MusicPlayService extends Service implements
          * 若重复点击该歌曲 不重复播放
          * 同时先做下标判断，下标溢出置零
          */
-        if(pos >= getMusicList().size())
-        {
+        if (pos >= getMusicList().size()) {
             pos %= getMusicList().size();
         }
         if (mPlayingMusicPosition == pos) {
-            if(!mediaPlayer.isPlaying())
-            {
+            if (!mediaPlayer.isPlaying()) {
                 resume();
             }
             return;
@@ -250,9 +251,18 @@ public class MusicPlayService extends Service implements
         }
     }
 
-    public static int getPlayingMusicPosition()
-    {
+    public static int getPlayingMusicPosition() {
         return mPlayingMusicPosition;
+    }
+
+    public static boolean getPlayingState() {
+        return mediaPlayer.isPlaying();
+    }
+    public static void addToStack(BaseActivity activity) {
+        sActivityStack.add(activity);
+    }
+    public static void removeFromStack(BaseActivity activity) {
+        sActivityStack.remove(activity);
     }
 
 

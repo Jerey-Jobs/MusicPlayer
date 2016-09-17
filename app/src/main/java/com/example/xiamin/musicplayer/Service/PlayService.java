@@ -10,8 +10,6 @@ import android.support.annotation.Nullable;
  */
 public class PlayService extends Service{
 
-
-
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {

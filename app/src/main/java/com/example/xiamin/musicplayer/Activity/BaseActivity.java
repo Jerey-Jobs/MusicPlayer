@@ -15,6 +15,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.example.xiamin.musicplayer.R;
+import com.example.xiamin.musicplayer.Service.MusicPlayService;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -33,6 +34,7 @@ public class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mHandler = new Handler();
         setSystemBarTransparent();
+        MusicPlayService.addToStack(this);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
 
@@ -55,6 +57,12 @@ public class BaseActivity extends AppCompatActivity {
     public void setContentView(View view, ViewGroup.LayoutParams params) {
         super.setContentView(view, params);
         initView();
+    }
+
+    @Override
+    protected void onDestroy() {
+        MusicPlayService.removeFromStack(this);
+        super.onDestroy();
     }
 
     private void initView() {

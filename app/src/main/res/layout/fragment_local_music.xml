@@ -20,5 +20,5 @@
         android:text="@string/no_local_music"
         android:textColor="@color/grey"
         android:textSize="14sp"
-        android:visibility="visible" />
+        android:visibility="gone" />
 </FrameLayout>

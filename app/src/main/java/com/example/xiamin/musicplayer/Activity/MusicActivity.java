@@ -75,9 +75,7 @@ public class MusicActivity extends BaseActivity implements View.OnClickListener,
         FragmentAdapter adapter = new FragmentAdapter(getSupportFragmentManager());
         adapter.addFragment(mLocalMusicFragment);
         mViewPager.setAdapter(adapter);
-
     }
-
 
     private MusicPlayService servicebinder;
     private ServiceConnection connet = new ServiceConnection() {
@@ -163,4 +161,15 @@ public class MusicActivity extends BaseActivity implements View.OnClickListener,
     public void setPlayBar(MusicInfoBean musicInfoBean) {
         mPlayBar.setInfo(musicInfoBean);
     }
+
+    @Override
+    public void onBackPressed() {
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
+            mDrawerLayout.closeDrawers();
+            return;
+        }
+        moveTaskToBack(false);
+    //    super.onBackPressed();
+    }
+
 }

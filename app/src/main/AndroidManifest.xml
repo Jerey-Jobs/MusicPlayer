@@ -21,7 +21,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Activity.MainActivity" />
+        <activity android:name=".Activity.MainActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"/>
         <activity android:name=".Activity.MusicActivity" />
 
         <service android:name=".Service.MusicPlayService" />

@@ -56,10 +56,13 @@ public class WelcomeActivity extends Activity {
             {
 
                 startActivity(new Intent(WelcomeActivity.this, MusicActivity.class));
-                WelcomeActivity.this.finish();
+
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                WelcomeActivity.this.finish();
             }
         });
+
+
 
     }
 }
