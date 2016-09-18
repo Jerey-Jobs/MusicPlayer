@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.example.xiamin.musicplayer.Activity.Fragment.LocalMusicFragment;
 import com.example.xiamin.musicplayer.Activity.Fragment.PlayFragment;
+import com.example.xiamin.musicplayer.Activity.Fragment.SongListFragment;
 import com.example.xiamin.musicplayer.Bean.MusicInfoBean;
 import com.example.xiamin.musicplayer.MVP.IPlayBar;
 import com.example.xiamin.musicplayer.MyView.PlayerBar;
@@ -51,6 +52,7 @@ public class MusicActivity extends BaseActivity implements View.OnClickListener,
 
     private View vNavigationHeader;
     private LocalMusicFragment mLocalMusicFragment;
+    private SongListFragment mSongListFragment;
     private PlayFragment mPlayFragment;
 
     @Override
@@ -72,8 +74,10 @@ public class MusicActivity extends BaseActivity implements View.OnClickListener,
         mvMenu.setOnClickListener(this);
 
         mLocalMusicFragment = new LocalMusicFragment();
+        mSongListFragment = new SongListFragment();
         FragmentAdapter adapter = new FragmentAdapter(getSupportFragmentManager());
         adapter.addFragment(mLocalMusicFragment);
+        adapter.addFragment(mSongListFragment);
         mViewPager.setAdapter(adapter);
     }
 
@@ -118,12 +122,12 @@ public class MusicActivity extends BaseActivity implements View.OnClickListener,
             }
             case R.id.tv_local_music: {
                 Log.i("iii","点击本地音乐");
-                // mViewPager.setCurrentItem(0);
+                 mViewPager.setCurrentItem(0);
                 break;
             }
             case R.id.tv_online_music: {
                 Log.i("iii","点击在线音乐");
-                //    mViewPager.setCurrentItem(1);
+                mViewPager.setCurrentItem(1);
                 break;
             }
         }
