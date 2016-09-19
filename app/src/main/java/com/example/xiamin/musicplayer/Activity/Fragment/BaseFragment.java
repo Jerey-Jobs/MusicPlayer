@@ -87,6 +87,11 @@ public abstract class BaseFragment extends Fragment {
         super.onDestroy();
         context.unbindService(connet);
     }
+
+    public void log(String logs)
+    {
+        Log.i("iii",logs);
+    }
 }
 
 

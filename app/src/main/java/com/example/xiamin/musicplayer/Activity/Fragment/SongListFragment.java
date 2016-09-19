@@ -8,15 +8,21 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import com.example.xiamin.musicplayer.Bean.OnlineMuiscBean;
 import com.example.xiamin.musicplayer.Bean.SongListInfo;
 import com.example.xiamin.musicplayer.R;
 import com.example.xiamin.musicplayer.adapter.SongListAdapter;
+import com.example.xiamin.musicplayer.utils.Constants;
+import com.example.xiamin.musicplayer.utils.JsonCallBack.JsonCallBack;
+import com.example.xiamin.musicplayer.utils.JsonCallBack.JsonOnlineMusicList;
 import com.example.xiamin.musicplayer.utils.NetworkUtils;
+import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import okhttp3.Call;
 
 /**
  * Created by Xiamin on 2016/9/16.
@@ -32,8 +38,7 @@ public class SongListFragment extends BaseFragment {
 
     @Override
     public void initView() {
-        if(!NetworkUtils.isNetworkAvailable(getContext()))
-        {
+        if (!NetworkUtils.isNetworkAvailable(getContext())) {
             mSongList.setVisibility(View.GONE);
             mLoading.setVisibility(View.GONE);
             mLoadFail.setVisibility(View.VISIBLE);
@@ -50,6 +55,31 @@ public class SongListFragment extends BaseFragment {
         }
         SongListAdapter adapter = new SongListAdapter(mSongListInfo);
         mSongList.setAdapter(adapter);
+
+        OkHttpUtils.get().url(Constants.BASE_URL)
+                .addParams(Constants.PARAM_METHOD, Constants.METHOD_GET_MUSIC_LIST)
+                .addParams(Constants.PARAM_TYPE, "1")
+                .addParams(Constants.PARAM_SIZE, "5")
+                .build()
+                .execute(new JsonCallBack<JsonOnlineMusicList>(JsonOnlineMusicList.class) {
+                    @Override
+                    public void onError(Call call, Exception e) {
+                    }
+
+                    @Override
+                    public void onResponse(JsonOnlineMusicList response) {
+                        if (response == null || response.getSong_list() == null) {
+                            log("response == null ");
+                            return;
+                        }
+                        for(int i = 0; i < 5; i++) {
+                            log(response.getSong_list().get(i).getArtist_name() + "|" +
+                                    response.getSong_list().get(i).getTitle());
+                            List<OnlineMuiscBean> jsonlist = response.getSong_list();
+                        }
+                    }
+                });
+
     }
 
     @Nullable
