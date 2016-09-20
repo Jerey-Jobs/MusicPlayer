@@ -28,7 +28,8 @@ import okhttp3.Call;
  * Created by Xiamin on 2016/9/18.
  */
 public class SongListAdapter extends BaseAdapter {
-
+    private static final int TYPE_PROFILE = -100;
+    private static final int TYPE_MUSIC_LIST = -99;
     private Context mContext;
     private List<SongListInfo> mData;
 
@@ -55,6 +56,7 @@ public class SongListAdapter extends BaseAdapter {
     /**
      * 在两种view切换加载时，易出view因重复加载导致viewholder错误问题
      * 暂时采用这种办法
+     *
      * @param i
      * @param view
      * @param viewGroup
@@ -64,34 +66,41 @@ public class SongListAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         ViewHolderMusicList viewHolderMusicList;
         ViewHolderProfile viewHolderProfile;
-        if (mData.get(i).getType().equals("#")) {
-            Log.w("iii", "mData.get(i).getType().equals(#)");
-//            if (view == null) {
-            view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.view_holder_song_list_profile, viewGroup, false);
-            viewHolderProfile = new ViewHolderProfile(view);
-            view.setTag(viewHolderProfile);
-//            } else {
-//                viewHolderProfile = (ViewHolderProfile) view.getTag();
-//            }
-//
-            viewHolderProfile.tvProfile.setText(mData.get(i).getTitle());
+        /**
+         * 必须复写该方法 才能解决view重复使用导致viewholder问题
+         */
+        int itemType = getItemViewType(i);
 
-            //  return view;
-        } else {
-//            if (view == null) {
-            view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.view_holder_song_list, viewGroup, false);
-            viewHolderMusicList = new ViewHolderMusicList(view);
-            view.setTag(viewHolderMusicList);
-//            } else {
-//                viewHolderMusicList = (ViewHolderMusicList) view.getTag();
-//            }
+        switch (itemType) {
+            case TYPE_PROFILE: {
+                Log.w("iii", "mData.get(i).getType().equals(#)");
+                if (view == null) {
+                    view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.view_holder_song_list_profile, viewGroup, false);
+                    viewHolderProfile = new ViewHolderProfile(view);
+                    view.setTag(viewHolderProfile);
+                } else {
+                    viewHolderProfile = (ViewHolderProfile) view.getTag();
+                }
 
-            viewHolderMusicList.vDivider.setVisibility(View.VISIBLE);
-            viewHolderMusicList.tvMusic1.setText(mData.get(i).getTitle());
-            setMusicListItemInfo(mData.get(i), viewHolderMusicList);
+                viewHolderProfile.tvProfile.setText(mData.get(i).getTitle());
+
+                break;
+            }
+
+            case TYPE_MUSIC_LIST: {
+                if (view == null) {
+                    view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.view_holder_song_list, viewGroup, false);
+                    viewHolderMusicList = new ViewHolderMusicList(view);
+                    view.setTag(viewHolderMusicList);
+                } else {
+                    viewHolderMusicList = (ViewHolderMusicList) view.getTag();
+                }
+                viewHolderMusicList.vDivider.setVisibility(View.VISIBLE);
+                viewHolderMusicList.tvMusic1.setText(mData.get(i).getTitle());
+                setMusicListItemInfo(mData.get(i), viewHolderMusicList);
+            }
+
         }
-
-
         return view;
     }
 
@@ -202,5 +211,17 @@ public class SongListAdapter extends BaseAdapter {
         }
     }
 
-
+    /**
+     *
+     * @param position
+     * @return
+     */
+    @Override
+    public int getItemViewType(int position) {
+        if (mData.get(position).getType().equals("#")) {
+            return TYPE_PROFILE;
+        } else {
+            return TYPE_MUSIC_LIST;
+        }
+    }
 }
