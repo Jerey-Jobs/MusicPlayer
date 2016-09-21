@@ -46,6 +46,7 @@ public class MusicPlayerApplication extends Application {
         OkHttpUtils.getInstance().setConnectTimeout(30, TimeUnit.SECONDS);
         OkHttpUtils.getInstance().setReadTimeout(30, TimeUnit.SECONDS);
         OkHttpUtils.getInstance().setWriteTimeout(30, TimeUnit.SECONDS);
+
     }
 
 
