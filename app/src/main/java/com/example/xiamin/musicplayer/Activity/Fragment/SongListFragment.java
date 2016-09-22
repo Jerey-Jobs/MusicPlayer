@@ -25,7 +25,7 @@ import butterknife.Bind;
 /**
  * Created by Xiamin on 2016/9/16.
  */
-public class SongListFragment extends BaseFragment implements AdapterView.OnItemClickListener{
+public class SongListFragment extends BaseFragment implements AdapterView.OnItemClickListener {
     @Bind(R.id.lv_song_list)
     ListView mSongList;
     @Bind(R.id.ll_loading)
@@ -33,6 +33,7 @@ public class SongListFragment extends BaseFragment implements AdapterView.OnItem
     @Bind(R.id.ll_load_fail)
     LinearLayout mLoadFail;
     private List<SongListInfo> mSongListInfo = new ArrayList<SongListInfo>();
+    private String[] types;
 
     @Override
     public void initView() {
@@ -44,14 +45,14 @@ public class SongListFragment extends BaseFragment implements AdapterView.OnItem
         }
 
         String[] titles = getResources().getStringArray(R.array.online_music_list_title);
-        String[] types = getResources().getStringArray(R.array.online_music_list_type);
+        types = getResources().getStringArray(R.array.online_music_list_type);
         for (int i = 0; i < titles.length; i++) {
             SongListInfo info = new SongListInfo();
             info.setTitle(titles[i]);
             info.setType(types[i]);
             mSongListInfo.add(info);
         }
-        SongListAdapter adapter = new SongListAdapter(mSongListInfo,this.getContext());
+        SongListAdapter adapter = new SongListAdapter(mSongListInfo, this.getContext());
         mSongList.setAdapter(adapter);
         mSongList.setOnItemClickListener(this);
 
@@ -67,10 +68,17 @@ public class SongListFragment extends BaseFragment implements AdapterView.OnItem
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        Log.i("iii","跳转到在线详细界面");
+        if (types[i].equals("#")) {
+            return;
+        }
+
+        Log.i("iii", "跳转到在线详细界面");
         OnlineMusicListFragment online = new OnlineMusicListFragment();
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.frame, online).commit();
+        fragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.fragment_slide_up, 0)
+                .replace(R.id.frame, online)
+                .commit();
         //增加可以返回的方法
         fragmentManager.beginTransaction().addToBackStack(null);
     }
