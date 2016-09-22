@@ -2,9 +2,11 @@ package com.example.xiamin.musicplayer.Activity.Fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -18,7 +20,7 @@ import butterknife.Bind;
 /**
  * Created by Xiamin on 2016/9/21.
  */
-public class OnlineMusicListFragment extends BaseFragment implements View.OnClickListener{
+public class OnlineMusicListFragment extends BaseFragment implements View.OnClickListener {
     @Bind(R.id.lv_online_music_list)
     ListView mlvOnlineMusic;
     @Bind(R.id.ll_loading)
@@ -37,11 +39,16 @@ public class OnlineMusicListFragment extends BaseFragment implements View.OnClic
     public void initView() {
 
         vHeader = LayoutInflater.from(getContext()).inflate(R.layout.activity_online_music_list_header, null);
-   //     AbsListView.LayoutParams params = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ScreenUtils.dp2px(150));
-   //     vHeader.setLayoutParams(params);
+        AbsListView.LayoutParams params = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 150);
+        vHeader.setLayoutParams(params);
         mlvOnlineMusic.addHeaderView(vHeader, null, false);
         mBackHome.setOnClickListener(this);
+
+        mllLoading.setVisibility(View.GONE);
+        mllLoadFail.setVisibility(View.GONE);
+        mlvOnlineMusic.setVisibility(View.VISIBLE);
     }
+
 
 
     @Nullable
@@ -52,12 +59,19 @@ public class OnlineMusicListFragment extends BaseFragment implements View.OnClic
 
     @Override
     public void onClick(View view) {
-        switch (view.getId())
-        {
-            case R.id.bar_iv_menu:{
+        switch (view.getId()) {
+            case R.id.bar_iv_menu: {
                 log("onClick R.id.bar_iv_menu");
-                getFragmentManager().popBackStack();
-                getActivity().finish();
+
+                /**
+                 * 使用hide 完美解决销毁问题
+                 */
+                FragmentTransaction transaction = getFragmentManager()
+                        .beginTransaction();
+                transaction.setCustomAnimations(0,R.anim.fragment_slide_down)
+                        .hide(this)
+                        .commit();
+
                 return;
             }
         }
