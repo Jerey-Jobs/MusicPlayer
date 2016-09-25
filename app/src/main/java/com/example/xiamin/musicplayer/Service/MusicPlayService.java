@@ -201,6 +201,7 @@ public class MusicPlayService extends Service implements
         }
     }
 
+
     public void initPlayer() {
         if (mediaPlayer.isPlaying()) {
             stopPlayer();

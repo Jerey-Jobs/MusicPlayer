@@ -141,7 +141,7 @@ public class SongListAdapter extends BaseAdapter {
         if (songListInfo.getCoverUrl() == null) {
             viewHolderMusicList.ivCover.setTag(R.id.tag_songlistviewholder, songListInfo.getTitle());
             viewHolderMusicList.ivCover.setImageResource(R.drawable.default_cover);
-            viewHolderMusicList.tvMusic1.setText("");
+            viewHolderMusicList.tvMusic1.setText("加载中...");
             viewHolderMusicList.tvMusic2.setText("");
             viewHolderMusicList.tvMusic3.setText("");
             OkHttpUtils.get().url(Constants.BASE_URL)

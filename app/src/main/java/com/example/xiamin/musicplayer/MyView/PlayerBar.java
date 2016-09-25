@@ -151,4 +151,9 @@ public class PlayerBar extends FrameLayout implements View.OnClickListener{
 
     }
 
+
+    private void showPlayingFragment()
+    {
+
+    }
 }

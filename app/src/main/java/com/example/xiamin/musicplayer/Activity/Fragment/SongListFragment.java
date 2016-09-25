@@ -35,6 +35,10 @@ public class SongListFragment extends BaseFragment implements AdapterView.OnItem
     private List<SongListInfo> mSongListInfo = new ArrayList<SongListInfo>();
     private String[] types;
 
+    public final static String  LIST_POSITION = "list_postion";
+    public final static String  LIST_POSITION_INFO = "list_postion_info";
+    public final static String  LIST_POSITION_TYPE= "list_postion_TYPE";
+
     @Override
     public void initView() {
         if (!NetworkUtils.isNetworkAvailable(getContext())) {
@@ -73,7 +77,12 @@ public class SongListFragment extends BaseFragment implements AdapterView.OnItem
         }
 
         Log.i("iii", "跳转到在线详细界面");
+        Bundle bundle = new Bundle();
+        bundle.putInt(LIST_POSITION,i);
+        bundle.putString(LIST_POSITION_TYPE,mSongListInfo.get(i).getType());
+
         OnlineMusicListFragment online = new OnlineMusicListFragment();
+        online.setArguments(bundle);
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fragment_slide_up, 0)

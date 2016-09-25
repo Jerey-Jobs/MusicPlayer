@@ -90,7 +90,7 @@ public abstract class BaseFragment extends Fragment {
 
     public void log(String logs)
     {
-        Log.i("iii",logs);
+        Log.i("iii",this.getClass().getName() +"->" + logs);
     }
 }
 
