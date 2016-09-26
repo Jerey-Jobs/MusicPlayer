@@ -39,6 +39,7 @@ public class PlayerBar extends FrameLayout implements View.OnClickListener{
     ProgressBar mProgress;    //之前 绑定错id出错
 
     private Context mContext;
+    private MusicInfoBean mMusicInfoBean;
 
     public PlayerBar(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
@@ -127,7 +128,10 @@ public class PlayerBar extends FrameLayout implements View.OnClickListener{
 
             default:{
                 Log.i("iii","onclick 去播放界面");
-
+                if(playingFragmentListener != null)
+                {
+                    playingFragmentListener.ShowPlayingFragment(mMusicInfoBean);
+                }
             }
 
         }
@@ -136,6 +140,7 @@ public class PlayerBar extends FrameLayout implements View.OnClickListener{
 
     public void setInfo(MusicInfoBean musicInfoBean)
     {
+        mMusicInfoBean = musicInfoBean;
         Glide.with(mContext)
                 .load(musicInfoBean.getCoverUri())
                 .error(R.drawable.default_cover)
@@ -151,9 +156,13 @@ public class PlayerBar extends FrameLayout implements View.OnClickListener{
 
     }
 
-
-    private void showPlayingFragment()
-    {
-
+    public interface ShowPlayingFragmentListener {
+       public void ShowPlayingFragment(MusicInfoBean mMusicInfoBean);
     }
+    ShowPlayingFragmentListener playingFragmentListener;
+
+    public  void setShowPlayingFragmentListener(ShowPlayingFragmentListener listener){
+        playingFragmentListener = listener;
+    }
+
 }

@@ -268,18 +268,11 @@ public class OnlineMusicListFragment extends BaseFragment implements View.OnClic
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         log("" + i + " info:" + mOnlineMusicList.get(i).getTitle() );
         playMusic(mOnlineMusicList.get(i - 1));
-
     }
 
-    private  void playMusic(OnlineMuiscBean onlineMuiscBean)
+    private  void playMusic(final OnlineMuiscBean onlineMuiscBean)
     {
-        MusicInfoBean musicInfoBean = new MusicInfoBean();
-        musicInfoBean.setAlbum(onlineMuiscBean.getAlbum_title());
-        musicInfoBean.setTitle(onlineMuiscBean.getTitle());
-        musicInfoBean.setArtist(onlineMuiscBean.getArtist_name());
-        musicInfoBean.setCoverUri(onlineMuiscBean.getPic_small());
 
-        ((MusicActivity)getActivity()).setPlayBar(musicInfoBean);
 
         OkHttpUtils.get().url(Constants.BASE_URL)
 
@@ -300,8 +293,16 @@ public class OnlineMusicListFragment extends BaseFragment implements View.OnClic
                             return;
                         }
                         log("开始播放在线音乐");
-                        getPlayService().playUrl(response.getBitrate().getFile_link());
 
+
+                        MusicInfoBean musicInfoBean = new MusicInfoBean();
+                        musicInfoBean.setUri(response.getBitrate().getFile_link());
+                        musicInfoBean.setAlbum(onlineMuiscBean.getAlbum_title());
+                        musicInfoBean.setTitle(onlineMuiscBean.getTitle());
+                        musicInfoBean.setArtist(onlineMuiscBean.getArtist_name());
+                        musicInfoBean.setCoverUri(onlineMuiscBean.getPic_small());
+                        getPlayService().play(musicInfoBean);
+                        ((MusicActivity)getActivity()).setPlayBar(musicInfoBean);
                     }
 
                 });

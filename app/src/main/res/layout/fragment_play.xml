@@ -59,19 +59,38 @@
             </LinearLayout>
         </LinearLayout>
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/vp_play_page"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:overScrollMode="never" />
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="32dp">
 
-        <me.wcy.music.widget.IndicatorLayout
-            android:id="@+id/il_indicator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="10dp" />
+            <com.example.xiamin.musicplayer.CircleImage.CircleImageView
+                android:id="@+id/fragment_play_circle_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/default_cover"
+                android:padding="3dp"
+                />
+
+        </LinearLayout>
+
+
+        <!--<android.support.v4.view.ViewPager-->
+        <!--android:id="@+id/vp_play_page"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:overScrollMode="never" />-->
+
+        <!--<me.wcy.music.widget.IndicatorLayout-->
+        <!--android:id="@+id/il_indicator"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center_horizontal"-->
+        <!--android:layout_margin="10dp" />-->
 
         <include layout="@layout/include_play_page_controller" />
     </LinearLayout>

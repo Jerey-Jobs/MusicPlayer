@@ -36,6 +36,7 @@ public abstract class BaseFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
         mResumed = true;
+        mybindService();
         initView();
     }
 
@@ -43,7 +44,7 @@ public abstract class BaseFragment extends Fragment {
     public void onAttach(Context context) {
         this.context = context;
         super.onAttach(context);
-        mybindService();
+
     }
 
     private MusicPlayService mMusicPlayService;

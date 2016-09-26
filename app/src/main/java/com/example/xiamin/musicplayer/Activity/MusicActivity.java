@@ -7,6 +7,8 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -32,7 +34,7 @@ import butterknife.Bind;
  */
 public class MusicActivity extends BaseActivity implements View.OnClickListener,
         ViewPager.OnPageChangeListener
-        ,IPlayBar{
+        , IPlayBar, PlayerBar.ShowPlayingFragmentListener {
     @Bind(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
     @Bind(R.id.navigation_view)
@@ -66,6 +68,8 @@ public class MusicActivity extends BaseActivity implements View.OnClickListener,
     private void initView() {
         mPlayBar = (PlayerBar) findViewById(R.id.fl_play_bar);
 
+        mPlayBar.setShowPlayingFragmentListener(this);
+
         mViewPager.setOnPageChangeListener(this);
         mDrawerLayout.setOnClickListener(this);
         mIvSearch.setOnClickListener(this);
@@ -87,7 +91,7 @@ public class MusicActivity extends BaseActivity implements View.OnClickListener,
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
             Log.i("iii", "onServiceConnected");
             servicebinder = ((MusicPlayService.Mybinder) iBinder).getservice();
-        //    servicebinder.initPlayer();
+            //    servicebinder.initPlayer();
         }
 
         //当启动源和service连接意外丢失时会调用
@@ -103,8 +107,7 @@ public class MusicActivity extends BaseActivity implements View.OnClickListener,
         bindService(intent, connet, Context.BIND_AUTO_CREATE);
     }
 
-    public MusicPlayService getMusicService()
-    {
+    public MusicPlayService getMusicService() {
         return servicebinder;
     }
 
@@ -112,21 +115,21 @@ public class MusicActivity extends BaseActivity implements View.OnClickListener,
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_menu: {
-                Log.i("iii","点击侧滑按钮");
+                Log.i("iii", "点击侧滑按钮");
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 break;
             }
             case R.id.iv_search: {
-                Log.i("iii","点击搜索按钮");
+                Log.i("iii", "点击搜索按钮");
                 break;
             }
             case R.id.tv_local_music: {
-                Log.i("iii","点击本地音乐");
-                 mViewPager.setCurrentItem(0);
+                Log.i("iii", "点击本地音乐");
+                mViewPager.setCurrentItem(0);
                 break;
             }
             case R.id.tv_online_music: {
-                Log.i("iii","点击在线音乐");
+                Log.i("iii", "点击在线音乐");
                 mViewPager.setCurrentItem(1);
                 break;
             }
@@ -168,12 +171,39 @@ public class MusicActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     public void onBackPressed() {
+        if (mIsPlayingFragment == true && mPlayFragment != null) {
+            hidePlayingFragment();
+            return;
+        }
+
+
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawers();
             return;
         }
         moveTaskToBack(false);
-    //    super.onBackPressed();
+        //    super.onBackPressed();
     }
 
+
+    private boolean mIsPlayingFragment;
+
+    @Override
+    public void ShowPlayingFragment(MusicInfoBean mMusicInfoBean) {
+        mPlayFragment = new PlayFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.fragment_slide_up, 0)
+                .replace(android.R.id.content, mPlayFragment)
+                .commit();
+        mIsPlayingFragment = true;
+    }
+
+    private void hidePlayingFragment() {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.setCustomAnimations(0, R.anim.fragment_slide_down);
+        ft.hide(mPlayFragment);
+        ft.commit();
+        mIsPlayingFragment = false;
+    }
 }

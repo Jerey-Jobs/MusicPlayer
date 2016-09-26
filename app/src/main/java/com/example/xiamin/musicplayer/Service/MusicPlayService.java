@@ -30,7 +30,7 @@ public class MusicPlayService extends Service implements
     private static List<MusicInfoBean> sMusicList = new ArrayList<MusicInfoBean>();
     private static final List<BaseActivity> sActivityStack = new ArrayList<>();
     //private String path = "http://ws.stream.qqmusic.qq.com/104779440.m4a?fromtag=46";
-    private MusicInfoBean mPlayingMusic;
+    private static MusicInfoBean mPlayingMusic;
     private static int mPlayingMusicPosition;
 
     @Nullable
@@ -190,7 +190,7 @@ public class MusicPlayService extends Service implements
             return;
         }
         mPlayingMusicPosition = pos;
-
+        mPlayingMusic = getMusicList().get(pos);
         try {
             mediaPlayer.reset();
             mediaPlayer.setDataSource(getMusicList().get(pos).getUri());
@@ -252,6 +252,9 @@ public class MusicPlayService extends Service implements
         }
     }
 
+    public  MusicInfoBean getPlayingMusic() {
+        return mPlayingMusic;
+    }
     public static int getPlayingMusicPosition() {
         return mPlayingMusicPosition;
     }

@@ -73,7 +73,7 @@ public class CircleImageView extends ImageView {
 
         TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.CircleImageView);
         mBorderColor = ta.getColor(R.styleable.CircleImageView_BorderColor, Color.GRAY);
-        mBorderWidth = ta.getDimension(R.styleable.CircleImageView_BorderWidth, 0);
+        mBorderWidth = ta.getDimension(R.styleable.CircleImageView_BorderWidth, 1);
         ta.recycle();
     }
 
@@ -108,7 +108,8 @@ public class CircleImageView extends ImageView {
         mBorderPaint.setStrokeWidth(mBorderWidth);//设置边界宽度
         //设置阴影
         this.setLayerType(LAYER_TYPE_SOFTWARE, mBorderPaint);
-        mBorderPaint.setShadowLayer(12.0f, 3.0f, 3.0f, Color.BLACK);
+
+   //     mBorderPaint.setShadowLayer(12.0f, 3.0f, 3.0f, Color.w);
         //end 设置阴影
 
         canvas.drawCircle(mWidth / 2, mWidth / 2, mRadius, mBorderPaint);
