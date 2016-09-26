@@ -9,8 +9,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.PixelFormat;
 import android.graphics.Shader;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -128,8 +128,7 @@ public class CircleImageView extends ImageView {
             return;
         }
 
-        BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
-        Bitmap bitmap = bitmapDrawable.getBitmap();
+        Bitmap bitmap = drawableToBitmap(drawable);
         /**
          * public   BitmapShader(Bitmap bitmap,Shader.TileMode tileX,Shader.TileMode tileY)
          调用这个方法来产生一个画有一个位图的渲染器（Shader）。
@@ -158,13 +157,25 @@ public class CircleImageView extends ImageView {
 
     }
 
+    static Bitmap drawableToBitmap(Drawable drawable) // drawable 转换成bitmap
+    {
+        int width = drawable.getIntrinsicWidth();// 取drawable的长宽
+        int height = drawable.getIntrinsicHeight();
+        Bitmap.Config config = drawable.getOpacity() != PixelFormat.OPAQUE ?Bitmap.Config.ARGB_8888:Bitmap.Config.RGB_565;// 取drawable的颜色格式
+        Bitmap bitmap = Bitmap.createBitmap(width, height, config);// 建立对应bitmap
+        Canvas canvas = new Canvas(bitmap);// 建立对应bitmap的画布
+        drawable.setBounds(0, 0, width, height);
+        drawable.draw(canvas);// 把drawable内容画到画布中
+        return bitmap;
+    }
+
     /**
      增加旋转动画
      */
     ObjectAnimator animtorAlpha;
     public void StartRotation()
     {
-        animtorAlpha = ObjectAnimator.ofFloat(this,"rotation",0f,1800f);
+        animtorAlpha = ObjectAnimator.ofFloat(this,"rotation",0f,900f);
         animtorAlpha.setInterpolator(new LinearInterpolator());
         animtorAlpha.setRepeatCount(100);
         animtorAlpha.setDuration(36000);
