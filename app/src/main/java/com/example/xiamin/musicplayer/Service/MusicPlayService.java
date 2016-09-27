@@ -158,7 +158,8 @@ public class MusicPlayService extends Service implements
         /**
          * 若重复点击该歌曲 不重复播放
          */
-        if (music.equals(mPlayingMusic)) {
+        if (mPlayingMusic != null && mPlayingMusic.getUri().equals(music.getUri())) {
+            Log.w("iii","music.getUri().equals(music.getUri()");
             if (!mediaPlayer.isPlaying()) {
                 resume();
             }
