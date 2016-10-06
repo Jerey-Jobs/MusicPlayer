@@ -1,5 +1,10 @@
 package com.example.xiamin.musicplayer.Activity;
 
+/**
+ * 此activity也已不用，为老版本activity
+ */
+
+
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;

@@ -24,14 +24,10 @@ public class MusicPlayerApplication extends Application {
 
         sInstance = this;
         sRes = getResources();
-     //   ToastUtils.init(this);
-    //    Preferences.init(this);
-     //   ScreenUtils.init(this);
-      //  updateNightMode(Preferences.isNightMode());
-     //   CrashHandler.getInstance().init();
-        initOkHttpUtils();
 
-     //   FIR.init(this);
+        initOkHttpUtils();
+        initGlide();
+
     }
 
     public static MusicPlayerApplication getInstance() {
@@ -47,6 +43,11 @@ public class MusicPlayerApplication extends Application {
         OkHttpUtils.getInstance().setReadTimeout(30, TimeUnit.SECONDS);
         OkHttpUtils.getInstance().setWriteTimeout(30, TimeUnit.SECONDS);
 
+    }
+
+    private void initGlide()
+    {
+    //    new GlideBuilder().setMemoryCache(new LruResourceCache(MEMORY_MAX_SPACE);
     }
 
 

@@ -7,12 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.xiamin.musicplayer.Bean.MusicInfoBean;
 import com.example.xiamin.musicplayer.CircleImage.CircleImageView;
 import com.example.xiamin.musicplayer.R;
+import com.example.xiamin.musicplayer.Service.MusicPlayService;
 
 import butterknife.Bind;
 
@@ -26,6 +28,20 @@ public class PlayFragment extends BaseFragment implements View.OnClickListener {
     TextView mArtistText;
     @Bind(R.id.tv_title)
     TextView mTitleText;
+    @Bind(R.id.iv_play_page_bg)
+    ImageView mBackGround;
+    @Bind(R.id.tv_current_time)
+    TextView m_CurrentTime;
+    @Bind(R.id.sb_progress)
+    SeekBar mProgress;
+    @Bind(R.id.tv_total_time)
+    TextView mTotalTime;
+    @Bind(R.id.iv_play)
+    ImageView mPlayButton;
+    @Bind(R.id.iv_next)
+    ImageView mNextButton;
+    @Bind(R.id.iv_prev)
+    ImageView mPrevButton;
 
     CircleImageView mPlayImageView;
     MusicInfoBean mMusicBean;
@@ -34,16 +50,17 @@ public class PlayFragment extends BaseFragment implements View.OnClickListener {
     @Override
     public void initView() {
         mBackHome.setOnClickListener(this);
+        mNextButton.setOnClickListener(this);
+        mPlayButton.setOnClickListener(this);
+        mPrevButton.setOnClickListener(this);
 
         mPlayImageView = (CircleImageView) getView().findViewById(R.id.fragment_play_circle_image);
         mPlayImageView.setOnClickListener(this);
         mPlayImageView.StartRotation();
 
-//        mMusicBean = getPlayService().getPlayingMusic();
-//        Glide.with(this)
-//                .load(mMusicBean.getUri())
-//                .error(R.drawable.default_cover)
-//                .into(mPlayImageView);
+        mMusicBean = getPlayService().getPlayingMusic();
+
+        initUI(mMusicBean);
     }
 
     @Nullable
@@ -76,6 +93,43 @@ public class PlayFragment extends BaseFragment implements View.OnClickListener {
                         .into(mPlayImageView);
                 break;
             }
+            case R.id.iv_next: {
+                getPlayService().next();
+                mMusicBean = getPlayService().getPlayingMusic();
+                initUI(mMusicBean);
+                break;
+            }
+            case R.id.iv_prev: {
+                break;
+            }
+            case R.id.iv_play: {
+                getPlayService().playPause();
+
+                if (MusicPlayService.getPlayingState()) {
+                    mPlayButton.setSelected(true);
+                    mPlayImageView.StartRotation();
+                } else {
+                    mPlayButton.setSelected(false);
+                    mPlayImageView.StopRotation();
+                }
+                break;
+            }
         }
+    }
+
+    private void initUI(MusicInfoBean musicBean) {
+        Glide.with(this)
+                .load(musicBean.getCoverUri())
+                .error(R.drawable.default_cover)
+                .into(mPlayImageView);
+        Glide.with(this)
+                .load(musicBean.getCoverUri())
+                .error(R.drawable.default_cover)
+                .into(mBackGround);
+        mBackGround.setAlpha(50);
+        mTotalTime.setText("" + musicBean.getDuration() / 60 + ":" + mMusicBean.getDuration() % 60);
+        mArtistText.setText(musicBean.getArtist());
+        mTitleText.setText(musicBean.getTitle());
+        mPlayButton.setSelected(true);
     }
 }

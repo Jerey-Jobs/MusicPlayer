@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 
+import com.example.xiamin.musicplayer.Activity.MusicActivity;
 import com.example.xiamin.musicplayer.Service.MusicPlayService;
 
 import butterknife.ButterKnife;
@@ -36,14 +37,16 @@ public abstract class BaseFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
         mResumed = true;
-        mybindService();
+
         initView();
     }
 
     @Override
     public void onAttach(Context context) {
         this.context = context;
+   //     mybindService();
         super.onAttach(context);
+
 
     }
 
@@ -76,6 +79,8 @@ public abstract class BaseFragment extends Fragment {
     }
 
     protected MusicPlayService getPlayService() {
+        mMusicPlayService=  ((MusicActivity)getActivity()).getMusicService();
+
         if(mMusicPlayService == null)
         {
             Log.e("iii","mMusicPlayService == null");
@@ -86,7 +91,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        context.unbindService(connet);
+//        context.unbindService(connet);
     }
 
     public void log(String logs)

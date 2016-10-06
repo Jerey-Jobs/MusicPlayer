@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.xiamin.musicplayer.Activity.MusicActivity;
 import com.example.xiamin.musicplayer.Bean.MusicDownLoadBean;
 import com.example.xiamin.musicplayer.Bean.MusicInfoBean;
@@ -60,7 +61,7 @@ public class OnlineMusicListFragment extends BaseFragment implements View.OnClic
     public void initView() {
 
         vHeader = LayoutInflater.from(getContext()).inflate(R.layout.activity_online_music_list_header, null);
-        AbsListView.LayoutParams params = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        AbsListView.LayoutParams params = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 300);
         vHeader.setLayoutParams(params);
         mlvOnlineMusic.addHeaderView(vHeader, null, false);
         mBackHome.setOnClickListener(this);      //在没有设置adapter前headview 是不显示的
@@ -257,7 +258,8 @@ public class OnlineMusicListFragment extends BaseFragment implements View.OnClic
                 .into(ivCover);
         Glide.with(this)
                 .load(res.getBillboard().getPic_s640())
-                .override(300,250)
+                .override(300,270)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .centerCrop()
                 .into(ivHeaderBg);
 
@@ -297,10 +299,11 @@ public class OnlineMusicListFragment extends BaseFragment implements View.OnClic
 
                         MusicInfoBean musicInfoBean = new MusicInfoBean();
                         musicInfoBean.setUri(response.getBitrate().getFile_link());
+                        musicInfoBean.setDuration(response.getBitrate().getFile_duration());
                         musicInfoBean.setAlbum(onlineMuiscBean.getAlbum_title());
                         musicInfoBean.setTitle(onlineMuiscBean.getTitle());
                         musicInfoBean.setArtist(onlineMuiscBean.getArtist_name());
-                        musicInfoBean.setCoverUri(onlineMuiscBean.getPic_small());
+                        musicInfoBean.setCoverUri(onlineMuiscBean.getPic_big());
                         getPlayService().play(musicInfoBean);
                         ((MusicActivity)getActivity()).setPlayBar(musicInfoBean);
                     }

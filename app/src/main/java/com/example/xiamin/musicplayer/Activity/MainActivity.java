@@ -1,5 +1,10 @@
 package com.example.xiamin.musicplayer.Activity;
 
+/**
+ * 此activity已经不用，为老版本主界面
+ */
+
+
 import android.app.Service;
 import android.content.ComponentName;
 import android.content.Intent;

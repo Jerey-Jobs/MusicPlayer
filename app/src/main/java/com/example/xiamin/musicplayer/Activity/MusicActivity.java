@@ -206,4 +206,12 @@ public class MusicActivity extends BaseActivity implements View.OnClickListener,
         ft.commit();
         mIsPlayingFragment = false;
     }
+
+//    private void hideOnlineFragment() {
+//        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+//        ft.setCustomAnimations(0, R.anim.fragment_slide_down);
+//        ft.hide(mPlayFragment);
+//        ft.commit();
+//        mIsPlayingFragment = false;
+//    }
 }

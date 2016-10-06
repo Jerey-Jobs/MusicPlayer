@@ -113,7 +113,7 @@ public class CircleImageView extends ImageView {
         //end 设置阴影
 
         canvas.drawCircle(mWidth / 2, mWidth / 2, mRadius, mBorderPaint);
-    //    StartRotation();
+
     }
 
     /**
@@ -175,7 +175,7 @@ public class CircleImageView extends ImageView {
     ObjectAnimator animtorAlpha;
     public void StartRotation()
     {
-        animtorAlpha = ObjectAnimator.ofFloat(this,"rotation",0f,900f);
+        animtorAlpha = ObjectAnimator.ofFloat(this,"rotation",0f,720f);
         animtorAlpha.setInterpolator(new LinearInterpolator());
         animtorAlpha.setRepeatCount(100);
         animtorAlpha.setDuration(36000);
