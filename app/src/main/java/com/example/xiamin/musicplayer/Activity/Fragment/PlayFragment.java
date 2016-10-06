@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.xiamin.musicplayer.Bean.MusicInfoBean;
 import com.example.xiamin.musicplayer.CircleImage.CircleImageView;
+import com.example.xiamin.musicplayer.MVP.IPlayBar;
 import com.example.xiamin.musicplayer.R;
 import com.example.xiamin.musicplayer.Service.MusicPlayService;
 
@@ -95,8 +96,10 @@ public class PlayFragment extends BaseFragment implements View.OnClickListener {
             }
             case R.id.iv_next: {
                 getPlayService().next();
+
                 mMusicBean = getPlayService().getPlayingMusic();
                 initUI(mMusicBean);
+                ((IPlayBar)getActivity()).setPlayBar(mMusicBean);
                 break;
             }
             case R.id.iv_prev: {
