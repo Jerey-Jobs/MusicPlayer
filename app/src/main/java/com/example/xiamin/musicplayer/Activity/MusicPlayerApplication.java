@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.support.v4.util.LongSparseArray;
 import android.util.DisplayMetrics;
 
+import com.example.xiamin.musicplayer.utils.ScreenUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.util.concurrent.TimeUnit;
@@ -25,6 +26,7 @@ public class MusicPlayerApplication extends Application {
         sInstance = this;
         sRes = getResources();
 
+        ScreenUtils.init(this);
         initOkHttpUtils();
         initGlide();
 

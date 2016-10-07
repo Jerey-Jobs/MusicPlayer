@@ -99,22 +99,19 @@ public class PlayFragment extends BaseFragment implements View.OnClickListener {
 
                 mMusicBean = getPlayService().getPlayingMusic();
                 initUI(mMusicBean);
-                ((IPlayBar)getActivity()).setPlayBar(mMusicBean);
+                ((IPlayBar) getActivity()).setPlayBar(mMusicBean);
                 break;
             }
             case R.id.iv_prev: {
+                getPlayService().preMusic();
+
+                mMusicBean = getPlayService().getPlayingMusic();
+                initUI(mMusicBean);
+                ((IPlayBar) getActivity()).setPlayBar(mMusicBean);
                 break;
             }
             case R.id.iv_play: {
-                getPlayService().playPause();
-
-                if (MusicPlayService.getPlayingState()) {
-                    mPlayButton.setSelected(true);
-                    mPlayImageView.StartRotation();
-                } else {
-                    mPlayButton.setSelected(false);
-                    mPlayImageView.StopRotation();
-                }
+                play_pressed();
                 break;
             }
         }
@@ -129,10 +126,27 @@ public class PlayFragment extends BaseFragment implements View.OnClickListener {
                 .load(musicBean.getCoverUri())
                 .error(R.drawable.default_cover)
                 .into(mBackGround);
-        mBackGround.setAlpha(50);
+        mBackGround.setAlpha(70);
         mTotalTime.setText("" + musicBean.getDuration() / 60 + ":" + mMusicBean.getDuration() % 60);
         mArtistText.setText(musicBean.getArtist());
         mTitleText.setText(musicBean.getTitle());
         mPlayButton.setSelected(true);
+    }
+
+
+    private void play_pressed() {
+        //获取服务 触发暂停或者播放
+        getPlayService().playPause();
+        //根据状态 改变按钮的样式 并且设置转轮情况
+        if (MusicPlayService.getPlayingState()) {
+            mPlayButton.setSelected(true);
+            mPlayImageView.StartRotation();
+        } else {
+            mPlayButton.setSelected(false);
+            mPlayImageView.StopRotation();
+        }
+        //再跟新activity中的按钮样式
+        mMusicBean = getPlayService().getPlayingMusic();
+        ((IPlayBar) getActivity()).setPlayBar(mMusicBean);
     }
 }

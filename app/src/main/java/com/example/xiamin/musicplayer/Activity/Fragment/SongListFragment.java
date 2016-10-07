@@ -85,7 +85,8 @@ public class SongListFragment extends BaseFragment implements AdapterView.OnItem
         online.setArguments(bundle);
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .setCustomAnimations(R.anim.fragment_slide_up, 0)
+               .setCustomAnimations(R.anim.fragment_slide_up, 0)
+//                .setCustomAnimations(android.R.anim.slide_in_left, 0)
                 .replace(R.id.frame, online)
                 .commit();
         //增加可以返回的方法

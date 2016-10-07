@@ -1,5 +1,6 @@
 package com.example.xiamin.musicplayer.Activity;
 
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -13,9 +14,11 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.xiamin.musicplayer.Activity.Fragment.LocalMusicFragment;
 import com.example.xiamin.musicplayer.Activity.Fragment.PlayFragment;
@@ -26,6 +29,7 @@ import com.example.xiamin.musicplayer.MyView.PlayerBar;
 import com.example.xiamin.musicplayer.R;
 import com.example.xiamin.musicplayer.Service.MusicPlayService;
 import com.example.xiamin.musicplayer.adapter.FragmentAdapter;
+import com.example.xiamin.musicplayer.utils.ScreenUtils;
 
 import butterknife.Bind;
 
@@ -34,11 +38,12 @@ import butterknife.Bind;
  */
 public class MusicActivity extends BaseActivity implements View.OnClickListener,
         ViewPager.OnPageChangeListener
-        , IPlayBar, PlayerBar.ShowPlayingFragmentListener {
+        , IPlayBar, PlayerBar.ShowPlayingFragmentListener
+        , NavigationView.OnNavigationItemSelectedListener {
     @Bind(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
     @Bind(R.id.navigation_view)
-    NavigationView mDavigationView;
+    NavigationView mNavigationView;
     @Bind(R.id.iv_menu)
     ImageView mvMenu;
     @Bind(R.id.iv_search)
@@ -76,6 +81,12 @@ public class MusicActivity extends BaseActivity implements View.OnClickListener,
         mTvLocalMusic.setOnClickListener(this);
         mTvOnlineMusic.setOnClickListener(this);
         mvMenu.setOnClickListener(this);
+        mNavigationView.setNavigationItemSelectedListener(this);
+        ImageView imageView = new ImageView(this);
+        imageView.setLayoutParams(new DrawerLayout.LayoutParams(DrawerLayout.LayoutParams.MATCH_PARENT
+                , ScreenUtils.dp2px(200f)));
+        imageView.setImageResource(R.drawable.jay);
+        mNavigationView.addHeaderView(imageView);
 
         mLocalMusicFragment = new LocalMusicFragment();
         mSongListFragment = new SongListFragment();
@@ -83,6 +94,8 @@ public class MusicActivity extends BaseActivity implements View.OnClickListener,
         adapter.addFragment(mLocalMusicFragment);
         adapter.addFragment(mSongListFragment);
         mViewPager.setAdapter(adapter);
+
+        mPlayFragment = new PlayFragment();
     }
 
     private MusicPlayService servicebinder;
@@ -190,7 +203,6 @@ public class MusicActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     public void ShowPlayingFragment(MusicInfoBean mMusicInfoBean) {
-        mPlayFragment = new PlayFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fragment_slide_up, 0)
@@ -205,6 +217,39 @@ public class MusicActivity extends BaseActivity implements View.OnClickListener,
         ft.hide(mPlayFragment);
         ft.commit();
         mIsPlayingFragment = false;
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(final MenuItem item) {
+        mDrawerLayout.closeDrawers();
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                item.setChecked(false);
+            }
+        }, 5000);
+        switch (item.getItemId()) {
+            case R.id.action_setting:
+                Toast.makeText(this, "setting", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.action_night:
+                Toast.makeText(this, "action_night", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.action_timer:
+                Toast.makeText(this, "action_timer", Toast.LENGTH_SHORT).show();
+                return true;
+            case R.id.action_exit:
+                getMusicService().stopPlayer();
+                for (Activity k : MusicPlayService.getActivityStack()) {
+                    k.finish();
+                }
+
+                return true;
+            case R.id.action_about:
+                return true;
+        }
+
+        return false;
     }
 
 //    private void hideOnlineFragment() {

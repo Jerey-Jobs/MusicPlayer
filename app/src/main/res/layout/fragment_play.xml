@@ -16,6 +16,7 @@
         android:id="@+id/ll_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+
         android:background="@color/translucent_black"
         android:orientation="vertical">
 
@@ -23,7 +24,8 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp">
 
             <ImageView
                 android:id="@+id/iv_back"

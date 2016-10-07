@@ -30,7 +30,7 @@ public class MusicPlayService extends Service implements
     private static List<MusicInfoBean> sMusicList = new ArrayList<MusicInfoBean>();
     private static final List<BaseActivity> sActivityStack = new ArrayList<>();
     //private String path = "http://ws.stream.qqmusic.qq.com/104779440.m4a?fromtag=46";
-    private static MusicInfoBean mPlayingMusic;
+    private static MusicInfoBean mPlayingMusic = new MusicInfoBean();
     private static int mPlayingMusicPosition;
 
     @Nullable
@@ -158,8 +158,9 @@ public class MusicPlayService extends Service implements
         /**
          * 若重复点击该歌曲 不重复播放
          */
-        if (mPlayingMusic != null && mPlayingMusic.getUri().equals(music.getUri())) {
-            Log.w("iii","music.getUri().equals(music.getUri()");
+        if (mPlayingMusic != null && mPlayingMusic.getUri() != null
+                && mPlayingMusic.getUri().equals(music.getUri())) {
+            Log.w("iii", "music.getUri().equals(music.getUri()");
             if (!mediaPlayer.isPlaying()) {
                 resume();
             }
@@ -181,6 +182,10 @@ public class MusicPlayService extends Service implements
          * 若重复点击该歌曲 不重复播放
          * 同时先做下标判断，下标溢出置零
          */
+        if (pos < 0) {
+            pos += getMusicList().size();
+        }
+
         if (pos >= getMusicList().size()) {
             pos %= getMusicList().size();
         }
@@ -241,10 +246,16 @@ public class MusicPlayService extends Service implements
         return mPlayingMusicPosition;
     }
 
+    public int preMusic() {
+        play(mPlayingMusicPosition - 1);
+        return mPlayingMusicPosition;
+    }
+
 
     public void stopPlayer() {
         if (mediaPlayer != null) {
             mediaPlayer.stop();
+            mediaPlayer.release();
             try {
                 mediaPlayer.prepare(); // 在调用stop后如果需要再次通过start进行播放,需要之前调用prepare函数
             } catch (Exception e) {
@@ -253,9 +264,10 @@ public class MusicPlayService extends Service implements
         }
     }
 
-    public  MusicInfoBean getPlayingMusic() {
+    public MusicInfoBean getPlayingMusic() {
         return mPlayingMusic;
     }
+
     public static int getPlayingMusicPosition() {
         return mPlayingMusicPosition;
     }
@@ -263,11 +275,17 @@ public class MusicPlayService extends Service implements
     public static boolean getPlayingState() {
         return mediaPlayer.isPlaying();
     }
+
     public static void addToStack(BaseActivity activity) {
         sActivityStack.add(activity);
     }
+
     public static void removeFromStack(BaseActivity activity) {
         sActivityStack.remove(activity);
+    }
+
+    public static List<BaseActivity> getActivityStack() {
+       return sActivityStack;
     }
 
 

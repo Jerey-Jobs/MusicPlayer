@@ -26,6 +26,7 @@ import com.example.xiamin.musicplayer.adapter.OnlineMusicListAdapter;
 import com.example.xiamin.musicplayer.utils.Constants;
 import com.example.xiamin.musicplayer.utils.JsonCallBack.JsonCallBack;
 import com.example.xiamin.musicplayer.utils.JsonCallBack.JsonOnlineMusicList;
+import com.example.xiamin.musicplayer.utils.ScreenUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ import okhttp3.Call;
  * Created by Xiamin on 2016/9/21.
  */
 public class OnlineMusicListFragment extends BaseFragment implements View.OnClickListener
-, AdapterView.OnItemClickListener{
+        , AdapterView.OnItemClickListener {
     @Bind(R.id.lv_online_music_list)
     ListView mlvOnlineMusic;
     @Bind(R.id.ll_loading)
@@ -61,14 +62,15 @@ public class OnlineMusicListFragment extends BaseFragment implements View.OnClic
     public void initView() {
 
         vHeader = LayoutInflater.from(getContext()).inflate(R.layout.activity_online_music_list_header, null);
-        AbsListView.LayoutParams params = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 300);
+        AbsListView.LayoutParams params = new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT
+                , ScreenUtils.dp2px(200));
         vHeader.setLayoutParams(params);
         mlvOnlineMusic.addHeaderView(vHeader, null, false);
         mBackHome.setOnClickListener(this);      //在没有设置adapter前headview 是不显示的
 
-        mllLoading.setVisibility(View.GONE);
+        mllLoading.setVisibility(View.VISIBLE);
         mllLoadFail.setVisibility(View.GONE);
-        mlvOnlineMusic.setVisibility(View.VISIBLE);
+        mlvOnlineMusic.setVisibility(View.GONE);
         mOnlineMusicList = new ArrayList<OnlineMuiscBean>();
 
         mAdapter = new OnlineMusicListAdapter(getContext(), mOnlineMusicList);
@@ -196,7 +198,9 @@ public class OnlineMusicListFragment extends BaseFragment implements View.OnClic
                 .execute(new JsonCallBack<JsonOnlineMusicList>(JsonOnlineMusicList.class) {
                     @Override
                     public void onError(Call call, Exception e) {
-
+                        mllLoading.setVisibility(View.GONE);
+                        mllLoadFail.setVisibility(View.VISIBLE);
+                        mlvOnlineMusic.setVisibility(View.GONE);
                     }
 
                     @Override
@@ -205,6 +209,9 @@ public class OnlineMusicListFragment extends BaseFragment implements View.OnClic
                             //        Log.i("iii", "response == null ");
                             return;
                         }
+                        mllLoading.setVisibility(View.GONE);
+                        mllLoadFail.setVisibility(View.GONE);
+                        mlvOnlineMusic.setVisibility(View.VISIBLE);
 
                         List<OnlineMuiscBean> jsonlist = response.getSong_list();
                         Log.i("iii", "OnlineMusicListFragment" + jsonlist.get(0).getArtist_name());
@@ -242,8 +249,7 @@ public class OnlineMusicListFragment extends BaseFragment implements View.OnClic
     }
 
 
-    private void initHeadView(JsonOnlineMusicList res)
-    {
+    private void initHeadView(JsonOnlineMusicList res) {
         ImageView ivHeaderBg = (ImageView) vHeader.findViewById(R.id.iv_header_bg);
         ImageView ivCover = (ImageView) vHeader.findViewById(R.id.iv_cover);
         TextView tvTitle = (TextView) vHeader.findViewById(R.id.tv_title);
@@ -255,10 +261,12 @@ public class OnlineMusicListFragment extends BaseFragment implements View.OnClic
         Glide.with(this)
                 .load(res.getBillboard().getPic_s260())
                 .error(R.drawable.default_cover)
+                .animate(android.R.anim.fade_in)
                 .into(ivCover);
         Glide.with(this)
                 .load(res.getBillboard().getPic_s640())
-                .override(300,270)
+                .animate(android.R.anim.fade_in)     //解决了加载卡顿一下的问题
+                .override(300, 270)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .centerCrop()
                 .into(ivHeaderBg);
@@ -268,12 +276,11 @@ public class OnlineMusicListFragment extends BaseFragment implements View.OnClic
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        log("" + i + " info:" + mOnlineMusicList.get(i).getTitle() );
+        log("" + i + " info:" + mOnlineMusicList.get(i).getTitle());
         playMusic(mOnlineMusicList.get(i - 1));
     }
 
-    private  void playMusic(final OnlineMuiscBean onlineMuiscBean)
-    {
+    private void playMusic(final OnlineMuiscBean onlineMuiscBean) {
 
 
         OkHttpUtils.get().url(Constants.BASE_URL)
@@ -289,8 +296,7 @@ public class OnlineMusicListFragment extends BaseFragment implements View.OnClic
 
                     @Override
                     public void onResponse(MusicDownLoadBean response) {
-                        if(response == null)
-                        {
+                        if (response == null) {
                             log("response == null");
                             return;
                         }
@@ -305,11 +311,11 @@ public class OnlineMusicListFragment extends BaseFragment implements View.OnClic
                         musicInfoBean.setArtist(onlineMuiscBean.getArtist_name());
                         musicInfoBean.setCoverUri(onlineMuiscBean.getPic_big());
                         getPlayService().play(musicInfoBean);
-                        ((MusicActivity)getActivity()).setPlayBar(musicInfoBean);
+                        ((MusicActivity) getActivity()).setPlayBar(musicInfoBean);
                     }
 
                 });
 
-    //    getPlayService().playUrl(onlineMuiscBean.get);
+        //    getPlayService().playUrl(onlineMuiscBean.get);
     }
 }
