@@ -95,7 +95,7 @@ public class MusicActivity extends BaseActivity implements View.OnClickListener,
         adapter.addFragment(mSongListFragment);
         mViewPager.setAdapter(adapter);
 
-        mPlayFragment = new PlayFragment();
+
     }
 
     private MusicPlayService servicebinder;
@@ -203,10 +203,14 @@ public class MusicActivity extends BaseActivity implements View.OnClickListener,
 
     @Override
     public void ShowPlayingFragment(MusicInfoBean mMusicInfoBean) {
+        //每次点击都得刷新fragment，而hide和show不走生命周期
+        mPlayFragment = new PlayFragment();
+
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fragment_slide_up, 0)
                 .replace(android.R.id.content, mPlayFragment)
+                .show(mPlayFragment)
                 .commit();
         mIsPlayingFragment = true;
     }

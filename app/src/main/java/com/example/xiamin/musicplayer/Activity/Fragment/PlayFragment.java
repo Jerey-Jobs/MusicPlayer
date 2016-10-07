@@ -3,7 +3,10 @@ package com.example.xiamin.musicplayer.Activity.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -22,7 +25,8 @@ import butterknife.Bind;
 /**
  * Created by Xiamin on 2016/9/15.
  */
-public class PlayFragment extends BaseFragment implements View.OnClickListener {
+public class PlayFragment extends BaseFragment implements
+        View.OnClickListener,View.OnTouchListener,GestureDetector.OnGestureListener {
     @Bind(R.id.iv_back)
     ImageView mBackHome;
     @Bind(R.id.tv_artist)
@@ -47,7 +51,6 @@ public class PlayFragment extends BaseFragment implements View.OnClickListener {
     CircleImageView mPlayImageView;
     MusicInfoBean mMusicBean;
 
-
     @Override
     public void initView() {
         mBackHome.setOnClickListener(this);
@@ -63,11 +66,14 @@ public class PlayFragment extends BaseFragment implements View.OnClickListener {
 
         initUI(mMusicBean);
     }
-
+    View view;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_play, container, false);
+        log("onCreateView");
+        view = inflater.inflate(R.layout.fragment_play, container, false);
+        view.setOnTouchListener(this);
+        return view;
     }
 
     @Override
@@ -148,5 +154,74 @@ public class PlayFragment extends BaseFragment implements View.OnClickListener {
         //再跟新activity中的按钮样式
         mMusicBean = getPlayService().getPlayingMusic();
         ((IPlayBar) getActivity()).setPlayBar(mMusicBean);
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        log("onResume");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        log("onDestroy");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        log("onPause");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        log("onStop");
+    }
+
+    GestureDetector gestureDetector = new GestureDetector(getActivity(),this);
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        gestureDetector.onTouchEvent(event);
+        return true;
+    }
+
+    @Override
+    public boolean onDown(MotionEvent e) {
+        Log.i("iii","GestureDetector: " + e.getX()+ "-" + e.getY() );
+        return false;
+    }
+
+    @Override
+    public void onShowPress(MotionEvent e) {
+
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent e) {
+        return false;
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+        return false;
+    }
+
+    @Override
+    public void onLongPress(MotionEvent e) {
+
+    }
+
+    @Override
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+
+        if (e2.getY() - e1.getY() > 150)
+        {
+            Log.i("iii","GestureDetector: " + e2.getY()+ "-" + e1.getY() );
+            Log.i("iii","ondown");
+        }
+        return true;
     }
 }

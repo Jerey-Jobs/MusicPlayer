@@ -132,6 +132,10 @@ public class PlayerBar extends FrameLayout implements View.OnClickListener{
                 {
                     playingFragmentListener.ShowPlayingFragment(mMusicInfoBean);
                 }
+                else
+                {
+                    Log.i("iii","playingFragmentListener = null");
+                }
             }
 
         }
