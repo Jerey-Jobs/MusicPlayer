@@ -14,6 +14,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.xiamin.musicplayer.Activity.MusicActivity;
 import com.example.xiamin.musicplayer.Bean.MusicInfoBean;
 import com.example.xiamin.musicplayer.CircleImage.CircleImageView;
 import com.example.xiamin.musicplayer.MVP.IPlayBar;
@@ -26,7 +27,7 @@ import butterknife.Bind;
  * Created by Xiamin on 2016/9/15.
  */
 public class PlayFragment extends BaseFragment implements
-        View.OnClickListener,View.OnTouchListener,GestureDetector.OnGestureListener {
+        View.OnClickListener, GestureDetector.OnGestureListener {
     @Bind(R.id.iv_back)
     ImageView mBackHome;
     @Bind(R.id.tv_artist)
@@ -50,6 +51,7 @@ public class PlayFragment extends BaseFragment implements
 
     CircleImageView mPlayImageView;
     MusicInfoBean mMusicBean;
+    MusicActivity.MyOnTouchListener onTouchListener;
 
     @Override
     public void initView() {
@@ -65,14 +67,24 @@ public class PlayFragment extends BaseFragment implements
         mMusicBean = getPlayService().getPlayingMusic();
 
         initUI(mMusicBean);
+
+        onTouchListener = new MusicActivity.MyOnTouchListener() {
+            @Override
+            public boolean onTouch(MotionEvent ev) {
+                gestureDetector.onTouchEvent(ev);
+                return false;
+            }
+        };
+        ((MusicActivity) getActivity()).registerMyOnTouchListener(onTouchListener);
     }
+
     View view;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         log("onCreateView");
         view = inflater.inflate(R.layout.fragment_play, container, false);
-        view.setOnTouchListener(this);
         return view;
     }
 
@@ -81,15 +93,8 @@ public class PlayFragment extends BaseFragment implements
         switch (view.getId()) {
             case R.id.iv_back: {
                 log("onClick R.id.bar_iv_menu");
+                hideThis();
 
-                /**
-                 * 使用hide 完美解决销毁问题
-                 */
-                FragmentTransaction transaction = getFragmentManager()
-                        .beginTransaction();
-                transaction.setCustomAnimations(0, R.anim.fragment_slide_down)
-                        .hide(this)
-                        .commit();
                 break;
             }
             case R.id.fragment_play_circle_image: {
@@ -156,6 +161,16 @@ public class PlayFragment extends BaseFragment implements
         ((IPlayBar) getActivity()).setPlayBar(mMusicBean);
     }
 
+    private void hideThis() {
+        /**
+         * 使用hide 完美解决销毁问题
+         */
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(0, R.anim.fragment_slide_down)
+                .hide(this)
+                .commit();
+    }
+
 
     @Override
     public void onResume() {
@@ -181,16 +196,12 @@ public class PlayFragment extends BaseFragment implements
         log("onStop");
     }
 
-    GestureDetector gestureDetector = new GestureDetector(getActivity(),this);
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        gestureDetector.onTouchEvent(event);
-        return true;
-    }
+    GestureDetector gestureDetector = new GestureDetector(getActivity(), this);
+
 
     @Override
     public boolean onDown(MotionEvent e) {
-        Log.i("iii","GestureDetector: " + e.getX()+ "-" + e.getY() );
+ //       Log.i("iii", "GestureDetector: " + e.getX() + "-" + e.getY());
         return false;
     }
 
@@ -216,12 +227,15 @@ public class PlayFragment extends BaseFragment implements
 
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-
-        if (e2.getY() - e1.getY() > 150)
-        {
-            Log.i("iii","GestureDetector: " + e2.getY()+ "-" + e1.getY() );
-            Log.i("iii","ondown");
+        if (e2.getY() - e1.getY() > 150) {
+            Log.i("iii", "GestureDetector: " + e2.getY() + "-" + e1.getY());
+            Log.i("iii", "ondown");
+            /**
+             * 若不unregister 则第二次出现空指针异常 因为每次都是新fragment
+             */
+            ((MusicActivity) getActivity()).unregisterMyOnTouchListener(onTouchListener);
+            hideThis();
         }
-        return true;
+        return false;
     }
 }

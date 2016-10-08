@@ -15,6 +15,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -30,6 +31,8 @@ import com.example.xiamin.musicplayer.R;
 import com.example.xiamin.musicplayer.Service.MusicPlayService;
 import com.example.xiamin.musicplayer.adapter.FragmentAdapter;
 import com.example.xiamin.musicplayer.utils.ScreenUtils;
+
+import java.util.ArrayList;
 
 import butterknife.Bind;
 
@@ -263,4 +266,29 @@ public class MusicActivity extends BaseActivity implements View.OnClickListener,
 //        ft.commit();
 //        mIsPlayingFragment = false;
 //    }
+
+
+    /**
+     * fragment触摸事件
+     */
+    private ArrayList<MyOnTouchListener> onTouchListeners = new ArrayList<MyOnTouchListener>(
+            10);
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        for (MyOnTouchListener listener : onTouchListeners) {
+            listener.onTouch(ev);
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+
+    public void registerMyOnTouchListener(MyOnTouchListener myOnTouchListener) {
+        onTouchListeners.add(myOnTouchListener);
+    }
+    public void unregisterMyOnTouchListener(MyOnTouchListener myOnTouchListener) {
+        onTouchListeners.remove(myOnTouchListener) ;
+    }
+    public interface MyOnTouchListener {
+        public boolean onTouch(MotionEvent ev);
+    }
 }
