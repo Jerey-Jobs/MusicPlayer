@@ -1,4 +1,4 @@
-package com.example.xiamin.musicplayer.Activity;
+package com.example.xiamin.musicplayer.Activity.oldVersionAvtivity;
 
 /**
  * 此activity也已不用，为老版本activity
