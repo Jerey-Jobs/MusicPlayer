@@ -229,12 +229,13 @@ public class MusicActivity extends BaseActivity implements View.OnClickListener,
     @Override
     public boolean onNavigationItemSelected(final MenuItem item) {
         mDrawerLayout.closeDrawers();
+        /*对于NavigationItem 当被按下后会呈现暗色，我们需要手动将其置为可按的状态*/
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 item.setChecked(false);
             }
-        }, 5000);
+        }, 500);
         switch (item.getItemId()) {
             case R.id.action_setting:
                 Toast.makeText(this, "setting", Toast.LENGTH_SHORT).show();
@@ -250,12 +251,10 @@ public class MusicActivity extends BaseActivity implements View.OnClickListener,
                 for (Activity k : MusicPlayService.getActivityStack()) {
                     k.finish();
                 }
-
                 return true;
             case R.id.action_about:
                 return true;
         }
-
         return false;
     }
 
@@ -277,7 +276,9 @@ public class MusicActivity extends BaseActivity implements View.OnClickListener,
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         for (MyOnTouchListener listener : onTouchListeners) {
-            listener.onTouch(ev);
+            if(listener != null) {
+                listener.onTouch(ev);
+            }
         }
         return super.dispatchTouchEvent(ev);
     }
