@@ -2,6 +2,7 @@ package com.example.xiamin.musicplayer.Service;
 
 import android.app.Service;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Binder;
@@ -11,6 +12,7 @@ import android.util.Log;
 
 import com.example.xiamin.musicplayer.Activity.BaseActivity;
 import com.example.xiamin.musicplayer.Bean.MusicInfoBean;
+import com.example.xiamin.musicplayer.Receiver.PhoneComingReceiver;
 import com.example.xiamin.musicplayer.utils.Actions;
 import com.example.xiamin.musicplayer.utils.MusicScanUntils;
 
@@ -24,7 +26,8 @@ import java.util.List;
 public class MusicPlayService extends Service implements
         MediaPlayer.OnPreparedListener
         , MediaPlayer.OnCompletionListener
-        , MediaPlayer.OnBufferingUpdateListener {
+        , MediaPlayer.OnBufferingUpdateListener
+        , AudioManager.OnAudioFocusChangeListener {
 
     private static MediaPlayer mediaPlayer = new MediaPlayer();
     private static List<MusicInfoBean> sMusicList = new ArrayList<MusicInfoBean>();
@@ -32,23 +35,28 @@ public class MusicPlayService extends Service implements
     //private String path = "http://ws.stream.qqmusic.qq.com/104779440.m4a?fromtag=46";
     private static MusicInfoBean mPlayingMusic = new MusicInfoBean();
     private static int mPlayingMusicPosition;
+    private PhoneComingReceiver mNoisyReceiver = new PhoneComingReceiver();
+    private AudioManager mAudioManager;
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-
         return new Mybinder();
     }
 
     @Override
     public void onCreate() {
+        super.onCreate();
         Log.i("iii", "Service onCreate");
         if (mediaPlayer.isPlaying()) {
             stopPlayer();
         }
         mediaPlayer.setOnCompletionListener(this);
         updateMusicList();
-        super.onCreate();
+        mAudioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+        mAudioManager.requestAudioFocus(this, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
+        IntentFilter mNoisyFilter = new IntentFilter(AudioManager.ACTION_AUDIO_BECOMING_NOISY);
+        registerReceiver(mNoisyReceiver, mNoisyFilter);
     }
 
     @Override
@@ -69,21 +77,28 @@ public class MusicPlayService extends Service implements
      */
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
-
+        next();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
+        if (intent == null || intent.getAction() == null) {
+            return START_NOT_STICKY;
+        }
         Log.i("iii", "service onStartCommand");
         switch (intent.getAction()) {
             case Actions.ACTION_MEDIA_PLAY_PAUSE:
-                //    playPause();
+                playPause();
                 break;
             case Actions.ACTION_MEDIA_NEXT:
-                //   next();
+                next();
                 break;
             case Actions.ACTION_MEDIA_PREVIOUS:
-                //    prev();
+                preMusic();
+                break;
+            case Actions.ACTION_MEDIA_PAUSE:
+                pause();
                 break;
         }
         return super.onStartCommand(intent, flags, startId);
@@ -115,6 +130,26 @@ public class MusicPlayService extends Service implements
             mediaPlayer.stop();
             mediaPlayer.release();
         }
+        unregisterReceiver(mNoisyReceiver);
+    }
+
+    /**
+     * 监听音频焦点
+     *
+     * @param focusChange
+     */
+    @Override
+    public void onAudioFocusChange(int focusChange) {
+        Log.i("iii", "onAudioFocusChange");
+        switch (focusChange) {
+            case AudioManager.AUDIOFOCUS_LOSS:
+            case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
+            case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
+                if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+                    pause();
+                }
+                break;
+        }
     }
 
     public class Mybinder extends Binder {
@@ -132,13 +167,11 @@ public class MusicPlayService extends Service implements
     }
 
     public int pause() {
-
         if (!mediaPlayer.isPlaying()) {
             return -1;
         }
         mediaPlayer.pause();
-
-
+        mAudioManager.abandonAudioFocus(this);
         Log.i("iii", "mediaPlayer.pause();");
         return 0;
 
@@ -285,7 +318,7 @@ public class MusicPlayService extends Service implements
     }
 
     public static List<BaseActivity> getActivityStack() {
-       return sActivityStack;
+        return sActivityStack;
     }
 
 

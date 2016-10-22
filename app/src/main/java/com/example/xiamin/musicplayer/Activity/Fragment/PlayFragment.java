@@ -233,8 +233,9 @@ public class PlayFragment extends BaseFragment implements
             /**
              * 若不unregister 则第二次出现空指针异常 因为每次都是新fragment
              */
-            ((MusicActivity) getActivity()).unregisterMyOnTouchListener(onTouchListener);
+
             hideThis();
+            ((MusicActivity) getActivity()).unregisterMyOnTouchListener(onTouchListener);
         }
         return false;
     }

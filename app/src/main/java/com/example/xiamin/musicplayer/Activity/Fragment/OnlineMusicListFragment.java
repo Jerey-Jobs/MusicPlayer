@@ -214,6 +214,11 @@ public class OnlineMusicListFragment extends BaseFragment implements View.OnClic
                         mlvOnlineMusic.setVisibility(View.VISIBLE);
 
                         List<OnlineMuiscBean> jsonlist = response.getSong_list();
+                        if (jsonlist == null)
+                        {
+                            log("jsonlist == null");
+                        }
+
                         Log.i("iii", "OnlineMusicListFragment" + jsonlist.get(0).getArtist_name());
                         mOnlineMusicList.addAll(jsonlist);
                         initHeadView(response);
