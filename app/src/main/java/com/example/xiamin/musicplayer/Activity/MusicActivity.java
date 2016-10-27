@@ -64,6 +64,7 @@ public class MusicActivity extends BaseActivity implements View.OnClickListener,
     private LocalMusicFragment mLocalMusicFragment;
     private SongListFragment mSongListFragment;
     private PlayFragment mPlayFragment;
+    private static final String TAG = "MusicActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +106,7 @@ public class MusicActivity extends BaseActivity implements View.OnClickListener,
     private ServiceConnection connet = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-            Log.i("iii", "onServiceConnected");
+            Log.i("TAG", "onServiceConnected");
             servicebinder = ((MusicPlayService.Mybinder) iBinder).getservice();
             //    servicebinder.initPlayer();
         }
@@ -113,7 +114,7 @@ public class MusicActivity extends BaseActivity implements View.OnClickListener,
         //当启动源和service连接意外丢失时会调用
         @Override
         public void onServiceDisconnected(ComponentName componentName) {
-            Log.i("iii", "onServiceDisconnected");
+            Log.i("TAG", "onServiceDisconnected");
         }
     };
 
@@ -131,21 +132,21 @@ public class MusicActivity extends BaseActivity implements View.OnClickListener,
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_menu: {
-                Log.i("iii", "点击侧滑按钮");
+                Log.i("TAG", "点击侧滑按钮");
                 mDrawerLayout.openDrawer(GravityCompat.START);
                 break;
             }
             case R.id.iv_search: {
-                Log.i("iii", "点击搜索按钮");
+                Log.i("TAG", "点击搜索按钮");
                 break;
             }
             case R.id.tv_local_music: {
-                Log.i("iii", "点击本地音乐");
+                Log.i("TAG", "点击本地音乐");
                 mViewPager.setCurrentItem(0);
                 break;
             }
             case R.id.tv_online_music: {
-                Log.i("iii", "点击在线音乐");
+                Log.i("TAG", "点击在线音乐");
                 mViewPager.setCurrentItem(1);
                 break;
             }
@@ -179,7 +180,6 @@ public class MusicActivity extends BaseActivity implements View.OnClickListener,
         unbindService(connet);
     }
 
-
     @Override
     public void setPlayBar(MusicInfoBean musicInfoBean) {
         mPlayBar.setInfo(musicInfoBean);
@@ -191,7 +191,6 @@ public class MusicActivity extends BaseActivity implements View.OnClickListener,
             hidePlayingFragment();
             return;
         }
-
 
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawers();

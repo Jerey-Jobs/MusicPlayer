@@ -94,15 +94,9 @@ public class PlayFragment extends BaseFragment implements
             case R.id.iv_back: {
                 log("onClick R.id.bar_iv_menu");
                 hideThis();
-
                 break;
             }
             case R.id.fragment_play_circle_image: {
-                mMusicBean = getPlayService().getPlayingMusic();
-                Glide.with(this)
-                        .load(mMusicBean.getCoverUri())
-                        .error(R.drawable.default_cover)
-                        .into(mPlayImageView);
                 break;
             }
             case R.id.iv_next: {
@@ -115,7 +109,6 @@ public class PlayFragment extends BaseFragment implements
             }
             case R.id.iv_prev: {
                 getPlayService().preMusic();
-
                 mMusicBean = getPlayService().getPlayingMusic();
                 initUI(mMusicBean);
                 ((IPlayBar) getActivity()).setPlayBar(mMusicBean);
@@ -230,11 +223,12 @@ public class PlayFragment extends BaseFragment implements
         if (e2.getY() - e1.getY() > 150) {
             Log.i("iii", "GestureDetector: " + e2.getY() + "-" + e1.getY());
             Log.i("iii", "ondown");
+
+
+            hideThis();
             /**
              * 若不unregister 则第二次出现空指针异常 因为每次都是新fragment
              */
-
-            hideThis();
             ((MusicActivity) getActivity()).unregisterMyOnTouchListener(onTouchListener);
         }
         return false;

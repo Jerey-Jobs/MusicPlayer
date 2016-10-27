@@ -95,6 +95,7 @@ public class OnlineMusicListFragment extends BaseFragment implements View.OnClic
         log("song " + bundle.getInt(SongListFragment.LIST_POSITION) + mType);
 
         /**
+         * 这些是发送类型请求拿到的json数据demo
          * {
          "song_list": [
          {

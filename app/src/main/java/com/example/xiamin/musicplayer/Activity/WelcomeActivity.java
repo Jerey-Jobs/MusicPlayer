@@ -1,30 +1,83 @@
 package com.example.xiamin.musicplayer.Activity;
 
+import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 
 import com.example.xiamin.musicplayer.R;
+import com.example.xiamin.musicplayer.utils.PermissionsChecker;
 
 /**
  * Created by Xiamin on 2016/8/27.
  */
-public class WelcomeActivity extends Activity {
+public class WelcomeActivity extends AppCompatActivity {
 
+    private static final int REQUEST_CODE = 111; // 请求码
+    // 所需的全部权限
+    static final String[] PERMISSIONS = new String[]{
+     //       Manifest.permission.MEDIA_CONTENT_CONTROL,
+            Manifest.permission.ACCESS_NETWORK_STATE,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.INTERNET
+    };
+    PermissionsChecker permissionsChecker;
+    private  View view;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final View view = View.inflate(this, R.layout.welcome, null);
+        view = View.inflate(this, R.layout.welcome, null);
         setContentView(view);
+        PermissionCheck();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    private void PermissionCheck()
+    {
+        permissionsChecker = new PermissionsChecker(this);
+        if(permissionsChecker.lacksPermissions(PERMISSIONS))
+        {
+            Log.i("iii","缺少权限，跳转权限申请界面");
+            Intent intent = new Intent(this,PermissionActivity.class);
+            intent.putExtra(PermissionActivity.PERMISSION_REQUEST_FLAG,PERMISSIONS);
+            startActivityForResult(intent,REQUEST_CODE);
+        }
+        else{
+            startToMain();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        /**
+         * 若权限拒绝
+         */
+        if(requestCode == REQUEST_CODE && resultCode == PermissionActivity.PERMISSIONS_DENIED)
+        {
+            finish();
+        }else if(requestCode == REQUEST_CODE && resultCode == PermissionActivity.PERMISSIONS_GRANTED)
+        {
+            startToMain();
+        }
+    }
+
+    private void startToMain()
+    {
         /**
          * 解决欢迎界面上面出现通知栏的问题，伪全屏
          */
@@ -58,11 +111,8 @@ public class WelcomeActivity extends Activity {
                 startActivity(new Intent(WelcomeActivity.this, MusicActivity.class));
 
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-                WelcomeActivity.this.finish();
+                        WelcomeActivity.this.finish();
             }
         });
-
-
-
     }
 }
