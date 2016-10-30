@@ -24,6 +24,7 @@ import butterknife.Bind;
 
 /**
  * Created by Xiamin on 2016/9/16.
+ * 在线音乐大纲界面
  */
 public class SongListFragment extends BaseFragment implements AdapterView.OnItemClickListener {
     @Bind(R.id.lv_song_list)
@@ -35,9 +36,9 @@ public class SongListFragment extends BaseFragment implements AdapterView.OnItem
     private List<SongListInfo> mSongListInfo = new ArrayList<SongListInfo>();
     private String[] types;
 
-    public final static String  LIST_POSITION = "list_postion";
-    public final static String  LIST_POSITION_INFO = "list_postion_info";
-    public final static String  LIST_POSITION_TYPE= "list_postion_TYPE";
+    public final static String LIST_POSITION = "list_postion";
+    public final static String LIST_POSITION_INFO = "list_postion_info";
+    public final static String LIST_POSITION_TYPE = "list_postion_TYPE";
 
     @Override
     public void initView() {
@@ -48,6 +49,9 @@ public class SongListFragment extends BaseFragment implements AdapterView.OnItem
             return;
         }
 
+        /**
+         * 加载本地定义好的uri 放入adapter去异步请求
+         */
         String[] titles = getResources().getStringArray(R.array.online_music_list_title);
         types = getResources().getStringArray(R.array.online_music_list_type);
         for (int i = 0; i < titles.length; i++) {
@@ -59,8 +63,6 @@ public class SongListFragment extends BaseFragment implements AdapterView.OnItem
         SongListAdapter adapter = new SongListAdapter(mSongListInfo, this.getContext());
         mSongList.setAdapter(adapter);
         mSongList.setOnItemClickListener(this);
-
-
     }
 
     @Nullable
@@ -72,21 +74,20 @@ public class SongListFragment extends BaseFragment implements AdapterView.OnItem
 
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-        if (types[i].equals("#")) {
+        if (types[i].equals("#")) {       //若点击的标志 则不跳转
             return;
         }
 
         Log.i("iii", "跳转到在线详细界面");
         Bundle bundle = new Bundle();
-        bundle.putInt(LIST_POSITION,i);
-        bundle.putString(LIST_POSITION_TYPE,mSongListInfo.get(i).getType());
+        bundle.putInt(LIST_POSITION, i);
+        bundle.putString(LIST_POSITION_TYPE, mSongListInfo.get(i).getType());
 
         OnlineMusicListFragment online = new OnlineMusicListFragment();
         online.setArguments(bundle);
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         fragmentManager.beginTransaction()
-               .setCustomAnimations(R.anim.fragment_slide_up, 0)
-//                .setCustomAnimations(android.R.anim.slide_in_left, 0)
+                .setCustomAnimations(R.anim.fragment_slide_up, 0)
                 .replace(R.id.frame, online)
                 .commit();
         //增加可以返回的方法

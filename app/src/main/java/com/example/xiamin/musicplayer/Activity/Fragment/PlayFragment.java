@@ -25,6 +25,7 @@ import butterknife.Bind;
 
 /**
  * Created by Xiamin on 2016/9/15.
+ * 播放列表界面
  */
 public class PlayFragment extends BaseFragment implements
         View.OnClickListener, GestureDetector.OnGestureListener {

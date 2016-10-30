@@ -18,6 +18,7 @@ import butterknife.Bind;
 
 /**
  * Created by Xiamin on 2016/9/15.
+ * 本地音乐fragment，位于主界面的viewpager中
  */
 public class LocalMusicFragment extends BaseFragment implements AdapterView.OnItemClickListener{
     @Bind(R.id.lv_local_music)

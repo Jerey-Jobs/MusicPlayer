@@ -66,6 +66,9 @@ public abstract class BaseFragment extends Fragment {
         }
     };
 
+    /**
+     * 绑定service 现如今不再调用
+     */
     private void mybindService() {
         Intent intent = new Intent();
         intent.setClass(context, MusicPlayService.class);
@@ -78,6 +81,11 @@ public abstract class BaseFragment extends Fragment {
         return mResumed;
     }
 
+    /**
+     * 供子类调用 获取service
+     * 现在是从activity直接获取service 不自己绑定service
+     * @return
+     */
     protected MusicPlayService getPlayService() {
         mMusicPlayService=  ((MusicActivity)getActivity()).getMusicService();
 

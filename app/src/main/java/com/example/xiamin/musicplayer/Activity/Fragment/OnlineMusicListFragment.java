@@ -308,7 +308,7 @@ public class OnlineMusicListFragment extends BaseFragment implements View.OnClic
                         }
                         log("开始播放在线音乐");
 
-
+                        /*从response中获取信息传入PlayService 并更新playbar*/
                         MusicInfoBean musicInfoBean = new MusicInfoBean();
                         musicInfoBean.setUri(response.getBitrate().getFile_link());
                         musicInfoBean.setDuration(response.getBitrate().getFile_duration());
