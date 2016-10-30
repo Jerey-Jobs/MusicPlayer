@@ -11,5 +11,4 @@ import java.util.List;
 public class MusicArrayList {
     private List<MusicInfoBean> localmusic;
     private List<MusicInfoBean> onlineMusic;
-
 }

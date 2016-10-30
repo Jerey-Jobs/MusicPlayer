@@ -14,7 +14,6 @@ import java.io.File;
 /**
  * Created by Xiamin on 2016/10/6.
  */
-
 public class MyGlideConfig implements GlideModule {
     private static final int MEMORY_MAX_SPACE=(int) (Runtime.getRuntime().maxMemory()/8);
 

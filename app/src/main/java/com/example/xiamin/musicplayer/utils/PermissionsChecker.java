@@ -7,8 +7,8 @@ import android.util.Log;
 
 /**
  * Created by Xiamin on 2016/10/23.
+ * 权限检查工具类，可复用
  */
-
 public class PermissionsChecker {
     private final Context mContext;
 

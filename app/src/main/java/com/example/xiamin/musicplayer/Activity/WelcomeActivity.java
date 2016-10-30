@@ -33,17 +33,13 @@ public class WelcomeActivity extends AppCompatActivity {
     };
     PermissionsChecker permissionsChecker;
     private  View view;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         view = View.inflate(this, R.layout.welcome, null);
         setContentView(view);
         PermissionCheck();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 
     private void PermissionCheck()
@@ -76,6 +72,9 @@ public class WelcomeActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * 开启动画进入主界面
+     */
     private void startToMain()
     {
         /**

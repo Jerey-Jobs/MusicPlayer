@@ -5,6 +5,7 @@ import android.view.WindowManager;
 
 /**
  * Created by Xiamin on 2016/10/7.
+ * 屏幕工具类
  */
 
 public class ScreenUtils {

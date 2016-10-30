@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Xiamin on 2016/9/15.
+ * 自定义Application类，负责初始化一些工具类
  */
 public class MusicPlayerApplication extends Application {
     private static MusicPlayerApplication sInstance;
@@ -26,11 +27,11 @@ public class MusicPlayerApplication extends Application {
 
         sInstance = this;
         sRes = getResources();
+        /*设置自己的异常处理器*/
         Thread.setDefaultUncaughtExceptionHandler(new AppUncaughtExceptionHander());
         ScreenUtils.init(this);
         initOkHttpUtils();
         initGlide();
-
     }
 
     public static MusicPlayerApplication getInstance() {
@@ -45,14 +46,10 @@ public class MusicPlayerApplication extends Application {
         OkHttpUtils.getInstance().setConnectTimeout(30, TimeUnit.SECONDS);
         OkHttpUtils.getInstance().setReadTimeout(30, TimeUnit.SECONDS);
         OkHttpUtils.getInstance().setWriteTimeout(30, TimeUnit.SECONDS);
-
     }
 
-    private void initGlide()
-    {
-    //    new GlideBuilder().setMemoryCache(new LruResourceCache(MEMORY_MAX_SPACE);
+    private void initGlide() {
     }
-
 
     public static void updateNightMode(boolean on) {
         DisplayMetrics dm = sRes.getDisplayMetrics();
@@ -61,5 +58,4 @@ public class MusicPlayerApplication extends Application {
         config.uiMode |= on ? Configuration.UI_MODE_NIGHT_YES : Configuration.UI_MODE_NIGHT_NO;
         sRes.updateConfiguration(config, dm);
     }
-
 }

@@ -22,6 +22,7 @@ import butterknife.ButterKnife;
 
 /**
  * Created by Xiamin on 2016/9/15.
+ * 基类activity，主要负责检查toolbar是否存在，以及将activity保存的作用
  */
 public class BaseActivity extends AppCompatActivity {
     @Bind(R.id.toolbar)

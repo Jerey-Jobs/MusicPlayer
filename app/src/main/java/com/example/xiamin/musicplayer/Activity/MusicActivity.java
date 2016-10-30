@@ -74,6 +74,10 @@ public class MusicActivity extends BaseActivity implements View.OnClickListener,
         bindService();
     }
 
+    /**
+     * 初始化view
+     * 主界面的初始化，侧边栏的设置
+     */
     private void initView() {
         mPlayBar = (PlayerBar) findViewById(R.id.fl_play_bar);
 
@@ -98,8 +102,6 @@ public class MusicActivity extends BaseActivity implements View.OnClickListener,
         adapter.addFragment(mLocalMusicFragment);
         adapter.addFragment(mSongListFragment);
         mViewPager.setAdapter(adapter);
-
-
     }
 
     private MusicPlayService servicebinder;
@@ -225,6 +227,11 @@ public class MusicActivity extends BaseActivity implements View.OnClickListener,
         mIsPlayingFragment = false;
     }
 
+    /**
+     * 侧边栏被点击的选项
+     * @param item
+     * @return
+     */
     @Override
     public boolean onNavigationItemSelected(final MenuItem item) {
         mDrawerLayout.closeDrawers();
@@ -267,11 +274,11 @@ public class MusicActivity extends BaseActivity implements View.OnClickListener,
 
 
     /**
-     * fragment触摸事件
+     * fragment触摸事件分发
+     * 由于fragment没有触摸事件，而我的播放页需要监听手势，因此需要监听触摸
      */
     private ArrayList<MyOnTouchListener> onTouchListeners = new ArrayList<MyOnTouchListener>(
             10);
-
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         for (MyOnTouchListener listener : onTouchListeners) {
@@ -281,7 +288,6 @@ public class MusicActivity extends BaseActivity implements View.OnClickListener,
         }
         return super.dispatchTouchEvent(ev);
     }
-
     public void registerMyOnTouchListener(MyOnTouchListener myOnTouchListener) {
         onTouchListeners.add(myOnTouchListener);
     }

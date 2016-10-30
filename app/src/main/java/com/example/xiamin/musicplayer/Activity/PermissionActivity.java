@@ -16,8 +16,8 @@ import com.example.xiamin.musicplayer.utils.PermissionsChecker;
 
 /**
  * Created by Xiamin on 2016/10/23.
+ * 权限activity，负责申请权限，没有view
  */
-
 public class PermissionActivity extends AppCompatActivity {
     public static final int PERMISSIONS_GRANTED = 0; // 权限授权
     public static final int PERMISSIONS_DENIED = 1; // 权限拒绝
@@ -81,6 +81,13 @@ public class PermissionActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * 检查是否所有的权限都已经被获取
+     *         全部获取返回ture
+     *         没有返回false
+     * @param grantResults
+     * @return
+     */
     private boolean hasAllPermissionsGranted(@NonNull int[] grantResults) {
         for (int grantResult : grantResults) {
             if (grantResult == PackageManager.PERMISSION_DENIED) {
@@ -113,6 +120,5 @@ public class PermissionActivity extends AppCompatActivity {
                     }
                 });
         builder.show();
-
     }
 }

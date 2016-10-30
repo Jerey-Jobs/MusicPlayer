@@ -12,6 +12,7 @@ import java.util.List;
 
 /**
  * Created by Xiamin on 2016/9/16.
+ * 使用系统自带的音乐provider 获取音乐信息
  */
 public class MusicScanUntils {
     /**

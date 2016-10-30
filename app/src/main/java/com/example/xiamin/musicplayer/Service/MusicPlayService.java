@@ -22,6 +22,7 @@ import java.util.List;
 
 /**
  * Created by Xiamin on 2016/9/8.
+ * 音乐播放本地服务，未使用aidl远程服务形式
  */
 public class MusicPlayService extends Service implements
         MediaPlayer.OnPreparedListener
