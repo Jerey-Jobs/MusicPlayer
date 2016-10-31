@@ -24,12 +24,21 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".Activity.MainActivity"
+        <activity android:name=".Activity.oldVersionAvtivity.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
         <activity android:name=".Activity.MusicActivity" />
+        <activity android:name=".Activity.PermissionActivity"/>
+
+
 
         <service android:name=".Service.MusicPlayService" />
+        <receiver android:name=".Receiver.RemoteControlReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON"/>
+            </intent-filter>
+        </receiver>
+
 
         <meta-data
             android:name="com.example.xiamin.musicplayer.utils.MyGlideConfig"
