@@ -157,7 +157,6 @@ public class PlayerBar extends FrameLayout implements View.OnClickListener{
         }else {
             mImagePlayButton.setImageResource(R.drawable.ic_play_bar_btn_play);
         }
-
     }
 
     public interface ShowPlayingFragmentListener {

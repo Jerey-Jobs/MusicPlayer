@@ -264,15 +264,6 @@ public class MusicActivity extends BaseActivity implements View.OnClickListener,
         return false;
     }
 
-//    private void hideOnlineFragment() {
-//        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-//        ft.setCustomAnimations(0, R.anim.fragment_slide_down);
-//        ft.hide(mPlayFragment);
-//        ft.commit();
-//        mIsPlayingFragment = false;
-//    }
-
-
     /**
      * fragment触摸事件分发
      * 由于fragment没有触摸事件，而我的播放页需要监听手势，因此需要监听触摸

@@ -212,6 +212,9 @@ public class MusicPlayService extends Service implements
     }
 
     public void play(int pos) {
+        if (getMusicList() == null) {         //
+            return;
+        }
         /**
          * 若重复点击该歌曲 不重复播放
          * 同时先做下标判断，下标溢出置零

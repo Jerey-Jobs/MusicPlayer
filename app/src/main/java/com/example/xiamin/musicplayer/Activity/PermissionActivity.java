@@ -37,28 +37,26 @@ public class PermissionActivity extends AppCompatActivity {
         }
         mChecker = new PermissionsChecker(this);
         isRequireCheck = true;
-        Log.i("TAG","onCreate ");
+        Log.i("TAG", "onCreate ");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if(isRequireCheck == false)
-        {
+        if (isRequireCheck == false) {
             return;
         }
         String[] permissions = getIntent().getStringArrayExtra(PERMISSION_REQUEST_FLAG);
         if (mChecker.lacksPermissions(permissions)) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                Log.i("TAG","onResume() 请求权限");
+                Log.i("TAG", "onResume() 请求权限");
                 isRequireCheck = true;
-                requestPermissions(permissions,PERMISSION_REQUEST_CODE); // 请求权限
+                requestPermissions(permissions, PERMISSION_REQUEST_CODE); // 请求权限
             }
         } else {
             allPermissionsGranted(); // 全部权限都已获取
         }
     }
-
 
 
     /**
@@ -83,8 +81,9 @@ public class PermissionActivity extends AppCompatActivity {
 
     /**
      * 检查是否所有的权限都已经被获取
-     *         全部获取返回ture
-     *         没有返回false
+     * 全部获取返回ture
+     * 没有返回false
+     *
      * @param grantResults
      * @return
      */
@@ -100,7 +99,7 @@ public class PermissionActivity extends AppCompatActivity {
     /**
      * 显示缺少权限
      */
-    private void showMissingPermissionDialog(){
+    private void showMissingPermissionDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setTitle("帮助！")
                 .setMessage("缺少权限，缺少权限软件将不能正常工作，请在设置中打开所有权限！")

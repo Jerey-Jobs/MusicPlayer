@@ -135,10 +135,21 @@ public class PlayFragment extends BaseFragment implements
         mTotalTime.setText("" + musicBean.getDuration() / 60 + ":" + mMusicBean.getDuration() % 60);
         mArtistText.setText(musicBean.getArtist());
         mTitleText.setText(musicBean.getTitle());
-        mPlayButton.setSelected(true);
+
+        //根据状态 改变按钮的样式 并且设置转轮情况
+        if (MusicPlayService.getPlayingState()) {
+            mPlayButton.setSelected(true);
+            mPlayImageView.StartRotation();
+        } else {
+            mPlayButton.setSelected(false);
+            mPlayImageView.StopRotation();
+        }
     }
 
 
+    /**
+     * 当play按钮
+     */
     private void play_pressed() {
         //获取服务 触发暂停或者播放
         getPlayService().playPause();

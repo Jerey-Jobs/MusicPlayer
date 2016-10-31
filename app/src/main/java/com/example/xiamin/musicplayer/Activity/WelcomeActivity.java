@@ -25,14 +25,14 @@ public class WelcomeActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 111; // 请求码
     // 所需的全部权限
     static final String[] PERMISSIONS = new String[]{
-     //       Manifest.permission.MEDIA_CONTENT_CONTROL,
+            //       Manifest.permission.MEDIA_CONTENT_CONTROL,
             Manifest.permission.ACCESS_NETWORK_STATE,
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.INTERNET
     };
     PermissionsChecker permissionsChecker;
-    private  View view;
+    private View view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,17 +42,14 @@ public class WelcomeActivity extends AppCompatActivity {
         PermissionCheck();
     }
 
-    private void PermissionCheck()
-    {
+    private void PermissionCheck() {
         permissionsChecker = new PermissionsChecker(this);
-        if(permissionsChecker.lacksPermissions(PERMISSIONS))
-        {
-            Log.i("iii","缺少权限，跳转权限申请界面");
-            Intent intent = new Intent(this,PermissionActivity.class);
-            intent.putExtra(PermissionActivity.PERMISSION_REQUEST_FLAG,PERMISSIONS);
-            startActivityForResult(intent,REQUEST_CODE);
-        }
-        else{
+        if (permissionsChecker.lacksPermissions(PERMISSIONS)) {
+            Log.i("iii", "缺少权限，跳转权限申请界面");
+            Intent intent = new Intent(this, PermissionActivity.class);
+            intent.putExtra(PermissionActivity.PERMISSION_REQUEST_FLAG, PERMISSIONS);
+            startActivityForResult(intent, REQUEST_CODE);
+        } else {
             startToMain();
         }
     }
@@ -63,11 +60,9 @@ public class WelcomeActivity extends AppCompatActivity {
         /**
          * 若权限拒绝
          */
-        if(requestCode == REQUEST_CODE && resultCode == PermissionActivity.PERMISSIONS_DENIED)
-        {
+        if (requestCode == REQUEST_CODE && resultCode == PermissionActivity.PERMISSIONS_DENIED) {
             finish();
-        }else if(requestCode == REQUEST_CODE && resultCode == PermissionActivity.PERMISSIONS_GRANTED)
-        {
+        } else if (requestCode == REQUEST_CODE && resultCode == PermissionActivity.PERMISSIONS_GRANTED) {
             startToMain();
         }
     }
@@ -75,8 +70,7 @@ public class WelcomeActivity extends AppCompatActivity {
     /**
      * 开启动画进入主界面
      */
-    private void startToMain()
-    {
+    private void startToMain() {
         /**
          * 解决欢迎界面上面出现通知栏的问题，伪全屏
          */
@@ -92,7 +86,7 @@ public class WelcomeActivity extends AppCompatActivity {
         /**
          * 改成放大的属性动画
          */
-        ObjectAnimator animtorAlpha = ObjectAnimator.ofFloat(view,"alpha",0.1f,1f);
+        ObjectAnimator animtorAlpha = ObjectAnimator.ofFloat(view, "alpha", 0.1f, 1f);
         ObjectAnimator animatorX = ObjectAnimator.ofFloat(view, "scaleX", 1f, 1.0f);
         ObjectAnimator animatorY = ObjectAnimator.ofFloat(view, "scaleY", 1f, 1.0f);
 
@@ -100,17 +94,14 @@ public class WelcomeActivity extends AppCompatActivity {
         set.setDuration(1000).play(animatorX).with(animatorY).with(animtorAlpha);
         set.start();
 
-        set.addListener(new AnimatorListenerAdapter()
-        {
-
+        set.addListener(new AnimatorListenerAdapter() {
             @Override
-            public void onAnimationEnd(Animator animation)
-            {
+            public void onAnimationEnd(Animator animation) {
 
                 startActivity(new Intent(WelcomeActivity.this, MusicActivity.class));
 
                 overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
-                        WelcomeActivity.this.finish();
+                WelcomeActivity.this.finish();
             }
         });
     }
