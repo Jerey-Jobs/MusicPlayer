@@ -5,9 +5,8 @@
     <application
         android:name=".MusicApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/social_ic_funfalt_album_music"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ui.activity.WelcomActivity">
@@ -17,7 +16,11 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".ui.guide.GuideActivity">
+        <activity
+            android:name=".ui.guide.GuideActivity"
+            android:theme="@style/LoadTheme">
+        </activity>
+        <activity android:name=".ui.activity.HomeActivity">
         </activity>
     </application>
 
