@@ -44,7 +44,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         this.context = context;
-   //     mybindService();
+        //     mybindService();
         super.onAttach(context);
 
 
@@ -84,14 +84,14 @@ public abstract class BaseFragment extends Fragment {
     /**
      * 供子类调用 获取service
      * 现在是从activity直接获取service 不自己绑定service
+     *
      * @return
      */
     protected MusicPlayService getPlayService() {
-        mMusicPlayService=  ((MusicActivity)getActivity()).getMusicService();
+        mMusicPlayService = ((MusicActivity) getActivity()).getMusicService();
 
-        if(mMusicPlayService == null)
-        {
-            Log.e("iii","mMusicPlayService == null");
+        if (mMusicPlayService == null) {
+            Log.e("iii", "mMusicPlayService == null");
         }
         return mMusicPlayService;
     }
@@ -102,9 +102,8 @@ public abstract class BaseFragment extends Fragment {
 //        context.unbindService(connet);
     }
 
-    public void log(String logs)
-    {
-        Log.i("iii",this.getClass().getName() +"->" + logs);
+    public void log(String logs) {
+        Log.i("iii", this.getClass().getName() + "->" + logs);
     }
 }
 
