@@ -28,7 +28,6 @@ import com.example.xiamin.musicplayer.utils.JsonCallBack.JsonCallBack;
 import com.example.xiamin.musicplayer.utils.JsonCallBack.JsonOnlineMusicList;
 import com.example.xiamin.musicplayer.utils.ScreenUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -204,52 +203,40 @@ public class OnlineMusicListFragment extends BaseFragment implements View.OnClic
                 .addParams(Constants.PARAM_TYPE, mType)
                 .addParams(Constants.PARAM_SIZE, "20")
                 .build()
-                .execute(new StringCallback() {
+                .execute(new JsonCallBack<JsonOnlineMusicList>(JsonOnlineMusicList.class) {
                     @Override
                     public void onError(Call call, Exception e) {
-                        Log.i(TAG, "出错了");
-                        e.printStackTrace();
+                        mllLoading.setVisibility(View.GONE);
+                        mllLoadFail.setVisibility(View.VISIBLE);
+                        mlvOnlineMusic.setVisibility(View.GONE);
                     }
 
                     @Override
-                    public void onResponse(String response) {
-                        Log.i(TAG, "response:" + response.toString());
+                    public void onResponse(JsonOnlineMusicList response) {
+                        if (response == null || response.getSong_list() == null) {
+                            //        Log.i("iii", "response == null ");
+                            return;
+                        }
+                        mllLoading.setVisibility(View.GONE);
+                        mllLoadFail.setVisibility(View.GONE);
+                        mlvOnlineMusic.setVisibility(View.VISIBLE);
+
+                        List<OnlineMuiscBean> jsonlist = response.getSong_list();
+                        if (jsonlist == null)
+                        {
+                            log("jsonlist == null");
+                        }
+
+                        Log.i("iii", "OnlineMusicListFragment" + jsonlist.get(0).getArtist_name());
+                        mOnlineMusicList.addAll(jsonlist);
+                        initHeadView(response);
+                        for (OnlineMuiscBean k : mOnlineMusicList
+                                ) {
+                            log(k.getArtist_name() + " " + k.getTitle());
+                        }
+                        mAdapter.notifyDataSetChanged();
                     }
                 });
-//                .execute(new JsonCallBack<JsonOnlineMusicList>(JsonOnlineMusicList.class) {
-//                    @Override
-//                    public void onError(Call call, Exception e) {
-//                        mllLoading.setVisibility(View.GONE);
-//                        mllLoadFail.setVisibility(View.VISIBLE);
-//                        mlvOnlineMusic.setVisibility(View.GONE);
-//                    }
-//
-//                    @Override
-//                    public void onResponse(JsonOnlineMusicList response) {
-//                        if (response == null || response.getSong_list() == null) {
-//                            //        Log.i("iii", "response == null ");
-//                            return;
-//                        }
-//                        mllLoading.setVisibility(View.GONE);
-//                        mllLoadFail.setVisibility(View.GONE);
-//                        mlvOnlineMusic.setVisibility(View.VISIBLE);
-//
-//                        List<OnlineMuiscBean> jsonlist = response.getSong_list();
-//                        if (jsonlist == null)
-//                        {
-//                            log("jsonlist == null");
-//                        }
-//
-//                        Log.i("iii", "OnlineMusicListFragment" + jsonlist.get(0).getArtist_name());
-//                        mOnlineMusicList.addAll(jsonlist);
-//                        initHeadView(response);
-//                        for (OnlineMuiscBean k : mOnlineMusicList
-//                                ) {
-//                            log(k.getArtist_name() + " " + k.getTitle());
-//                        }
-//                        mAdapter.notifyDataSetChanged();
-//                    }
-//                });
 
     }
 
@@ -310,7 +297,11 @@ public class OnlineMusicListFragment extends BaseFragment implements View.OnClic
 
 
         OkHttpUtils.get().url(Constants.BASE_URL)
-
+                .addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
+                .addHeader("Accept-Encoding","gzip, deflate, sdch")
+                .addHeader("Accept-Language", "zh-CN,zh;q=0.8,en-US;q=0.6,en;q=0.4")
+                .addHeader("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.110 Safari/537.36")
+                .addHeader("Host", "tingapi.ting.baidu.com")
                 .addParams(Constants.PARAM_METHOD, Constants.METHOD_DOWNLOAD_MUSIC)
                 .addParams(Constants.PARAM_SONG_ID, onlineMuiscBean.getSong_id())
                 .build()

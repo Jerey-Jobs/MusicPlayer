@@ -6,7 +6,6 @@ import android.content.res.Resources;
 import android.support.v4.util.LongSparseArray;
 import android.util.DisplayMetrics;
 
-import com.example.xiamin.musicplayer.utils.AppUncaughtExceptionHander;
 import com.example.xiamin.musicplayer.utils.ScreenUtils;
 import com.zhy.http.okhttp.OkHttpUtils;
 
@@ -28,7 +27,7 @@ public class MusicPlayerApplication extends Application {
         sInstance = this;
         sRes = getResources();
         /*设置自己的异常处理器*/
-        Thread.setDefaultUncaughtExceptionHandler(new AppUncaughtExceptionHander());
+      //  Thread.setDefaultUncaughtExceptionHandler(new AppUncaughtExceptionHander());
         ScreenUtils.init(this);
         initOkHttpUtils();
         initGlide();

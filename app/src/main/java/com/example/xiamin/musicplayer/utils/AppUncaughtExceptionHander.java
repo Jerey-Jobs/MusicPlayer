@@ -11,6 +11,7 @@ public class AppUncaughtExceptionHander implements Thread.UncaughtExceptionHandl
     @Override
     public void uncaughtException(Thread t, Throwable e) {
         Log.e("iii",e.toString());
+        e.printStackTrace();
         System.exit(1);
     }
 }

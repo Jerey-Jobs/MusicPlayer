@@ -145,6 +145,11 @@ public class SongListAdapter extends BaseAdapter {
             viewHolderMusicList.tvMusic2.setText("");
             viewHolderMusicList.tvMusic3.setText("");
             OkHttpUtils.get().url(Constants.BASE_URL)
+                    .addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
+                    .addHeader("Accept-Encoding","gzip, deflate, sdch")
+                    .addHeader("Accept-Language", "zh-CN,zh;q=0.8,en-US;q=0.6,en;q=0.4")
+                    .addHeader("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.110 Safari/537.36")
+                    .addHeader("Host", "tingapi.ting.baidu.com")
                     .addParams(Constants.PARAM_METHOD, Constants.METHOD_GET_MUSIC_LIST)
                     .addParams(Constants.PARAM_TYPE, songListInfo.getType())
                     .addParams(Constants.PARAM_SIZE, "3")

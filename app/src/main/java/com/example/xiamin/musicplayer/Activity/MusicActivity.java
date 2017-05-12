@@ -270,21 +270,27 @@ public class MusicActivity extends BaseActivity implements View.OnClickListener,
      */
     private ArrayList<MyOnTouchListener> onTouchListeners = new ArrayList<MyOnTouchListener>(
             10);
+
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         for (MyOnTouchListener listener : onTouchListeners) {
-            if(listener != null) {
+            if (listener != null) {
                 listener.onTouch(ev);
             }
         }
         return super.dispatchTouchEvent(ev);
     }
+
     public void registerMyOnTouchListener(MyOnTouchListener myOnTouchListener) {
         onTouchListeners.add(myOnTouchListener);
     }
+
     public void unregisterMyOnTouchListener(MyOnTouchListener myOnTouchListener) {
-        onTouchListeners.remove(myOnTouchListener) ;
+        if (onTouchListeners.contains(myOnTouchListener)) {
+            onTouchListeners.remove(myOnTouchListener);
+        }
     }
+
     public interface MyOnTouchListener {
         public boolean onTouch(MotionEvent ev);
     }

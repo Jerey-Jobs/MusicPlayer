@@ -12,6 +12,8 @@ import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.animation.LinearInterpolator;
@@ -41,7 +43,6 @@ public class CircleImageView extends ImageView {
     private Matrix mMatrix;
 
 
-
     public CircleImageView(Context context) {
         super(context);
         ImageViewInit(context, null);
@@ -49,12 +50,12 @@ public class CircleImageView extends ImageView {
 
     public CircleImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        ImageViewInit(context,attrs);
+        ImageViewInit(context, attrs);
     }
 
     public CircleImageView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        ImageViewInit(context,attrs);
+        ImageViewInit(context, attrs);
     }
 
     /**
@@ -62,8 +63,7 @@ public class CircleImageView extends ImageView {
      * @param context
      * @param attrs
      */
-    private void ImageViewInit(Context context, AttributeSet attrs)
-    {
+    private void ImageViewInit(Context context, AttributeSet attrs) {
         mMatrix = new Matrix();
         mBitmapPaint = new Paint();
         mBorderPaint = new Paint();
@@ -93,13 +93,12 @@ public class CircleImageView extends ImageView {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        if(getDrawable() == null)
-        {
+        if (getDrawable() == null) {
             super.onDraw(canvas);
             return;
         }
         setUpShader();
-        canvas.drawCircle(mWidth/2,mWidth/2,mRadius,mBitmapPaint);
+        canvas.drawCircle(mWidth / 2, mWidth / 2, mRadius, mBitmapPaint);
 
         //set border paint
         mBorderPaint.setStyle(Paint.Style.STROKE);//设置笔刷样式：原区域掏空，只画边界
@@ -109,7 +108,7 @@ public class CircleImageView extends ImageView {
         //设置阴影
         this.setLayerType(LAYER_TYPE_SOFTWARE, mBorderPaint);
 
-   //     mBorderPaint.setShadowLayer(12.0f, 3.0f, 3.0f, Color.w);
+        //     mBorderPaint.setShadowLayer(12.0f, 3.0f, 3.0f, Color.w);
         //end 设置阴影
 
         canvas.drawCircle(mWidth / 2, mWidth / 2, mRadius, mBorderPaint);
@@ -119,12 +118,10 @@ public class CircleImageView extends ImageView {
     /**
      * 初始化BitmapShader
      */
-    private void setUpShader()
-    {
+    private void setUpShader() {
         //首先获得drawable对象，也就是控件属性的src，也就是我们的图片
         Drawable drawable = getDrawable();
-        if (drawable == null)
-        {
+        if (drawable == null) {
             return;
         }
 
@@ -146,9 +143,9 @@ public class CircleImageView extends ImageView {
          * 获取缩放系数
          */
         float scale = 1.0f;
-        int bitmapSize = Math.min(bitmap.getHeight(),bitmap.getWidth());
+        int bitmapSize = Math.min(bitmap.getHeight(), bitmap.getWidth());
         scale = mWidth * 1.0f / bitmapSize;
-        mMatrix.setScale(scale,scale);
+        mMatrix.setScale(scale, scale);
         mBitmapShader.setLocalMatrix(mMatrix);
         /**
          * 着色
@@ -161,7 +158,7 @@ public class CircleImageView extends ImageView {
     {
         int width = drawable.getIntrinsicWidth();// 取drawable的长宽
         int height = drawable.getIntrinsicHeight();
-        Bitmap.Config config = drawable.getOpacity() != PixelFormat.OPAQUE ?Bitmap.Config.ARGB_8888:Bitmap.Config.RGB_565;// 取drawable的颜色格式
+        Bitmap.Config config = drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888 : Bitmap.Config.RGB_565;// 取drawable的颜色格式
         Bitmap bitmap = Bitmap.createBitmap(width, height, config);// 建立对应bitmap
         Canvas canvas = new Canvas(bitmap);// 建立对应bitmap的画布
         drawable.setBounds(0, 0, width, height);
@@ -170,24 +167,38 @@ public class CircleImageView extends ImageView {
     }
 
     /**
-     增加旋转动画
+     * 增加旋转动画
      */
     ObjectAnimator animtorAlpha;
-    public void StartRotation()
-    {
-        animtorAlpha = ObjectAnimator.ofFloat(this,"rotation",0f,720f);
-        animtorAlpha.setInterpolator(new LinearInterpolator());
-        animtorAlpha.setRepeatCount(100);
-        animtorAlpha.setDuration(36000);
-        animtorAlpha.start();
-        Log.i("iii","reloate");
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void StartRotation() {
+        if (animtorAlpha == null) {
+            animtorAlpha = ObjectAnimator.ofFloat(this, "rotation", 0f, 720f);
+            animtorAlpha.setInterpolator(new LinearInterpolator());
+            animtorAlpha.setRepeatCount(100);
+            animtorAlpha.setDuration(36000);
         }
+        if (!animtorAlpha.isStarted()) {
+            animtorAlpha.start();
+        }
+        if (!animtorAlpha.isRunning()) {
+            animtorAlpha.resume();
+        }
+        Log.i("iii", "reloate");
+    }
 
     /**
      * 停止旋转
      */
-    public void StopRotation()
-    {
-        animtorAlpha.end();
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public void StopRotation() {
+        Log.i("iii", "StopRotation");
+        if (animtorAlpha.isRunning()) {
+            animtorAlpha.pause();
+        }
+        if (animtorAlpha.isStarted()) {
+            animtorAlpha.end();
+        }
     }
 }

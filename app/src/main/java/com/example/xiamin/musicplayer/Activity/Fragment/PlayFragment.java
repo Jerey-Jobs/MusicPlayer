@@ -63,7 +63,6 @@ public class PlayFragment extends BaseFragment implements
 
         mPlayImageView = (CircleImageView) getView().findViewById(R.id.fragment_play_circle_image);
         mPlayImageView.setOnClickListener(this);
-        mPlayImageView.StartRotation();
 
         mMusicBean = getPlayService().getPlayingMusic();
 
@@ -170,10 +169,12 @@ public class PlayFragment extends BaseFragment implements
         /**
          * 使用hide 完美解决销毁问题
          */
-        FragmentTransaction transaction = getFragmentManager().beginTransaction();
-        transaction.setCustomAnimations(0, R.anim.fragment_slide_down)
-                .hide(this)
-                .commit();
+        if (getFragmentManager() != null) {
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(0, R.anim.fragment_slide_down)
+                    .hide(this)
+                    .commit();
+        }
     }
 
 
